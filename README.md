@@ -34,16 +34,13 @@ Web Plotter
 
 ## Github的使用
 
-1. 将本项目 clone 到本地
-1. 多人协作开发时，最好一打开电脑，马上先 pull，拉取最新的。然后进行常规开发，开发完毕之后，在 commit 之前，也使用 pull 再拉取一遍。随后再 commit , push
+1. 将本项目 `clone` 到本地
+1. 多人协作开发时，最好一打开电脑，马上先 `pull`，拉取最新的。然后进行常规开发，开发完毕之后，在 `commit` 之前，也使用 `pull` 再拉取一遍。随后再 `commit` , `push`
 
 ## 进度
 
-- [x] 元器件库结构体
-  - [x] 新建元器件库结构体相关文件：xxx.js yyy.js
-  - [x] 结构体设计
-  - [x] 在jQuery对象中添加成员函数.xxx(yyy)，调用之后可以在对应DOM对象下使用svg画出对应元器件
-  - [x] _◎提供接口函数xxx(yyy, zzz1, ...)，调用之后可以添加元器件_
+- [] 用鼠标随便画
+- [] 
 
 未完待续...
 
@@ -66,7 +63,3 @@ Web Plotter
 | index.html | HTML主页 |
 | README.md | 说明文档 |
 | .gitignore | git commit时忽略此文件中对应的文件 |
-
-### js/test/\*.js 与 js/main.js 的区别
-
-相比其它js脚本文件， js/test/\*.js 与 js/main.js 都会按 index.html 中的顺序运行，其它js文件则只有函数，不应直接运行。但是 js/main.js 会同步到Github仓库，而git commit时会忽略 js/test/ 中的所有文件（由 .gitignore 指定）。所以Github仓库中的 js/test/ 不包含任何文件，需要在各自的本地仓库新建。新建时建议取名为 js/test/test.js ，否则需要在 index.html 加入新文件。当然也可以直接在 js/test/ 中新建html文件和js文件来测试，这种修改就完全不会对服务器产生影响。其结果就是服务器上的 index.html 只运行 js/main.js，本地可能会额外运行 js/test/\*.js，供测试用。
