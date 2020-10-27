@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Schematic Designer</title>
+
+  <link rel="stylesheet" href="external/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="css/component.css">
+  <script src="external/jquery/js/jquery-3.2.1.js"></script>
+  <script src="external/jquery/js/jquery-ui.js"></script>
+  <script src="assets/js/jquery/jquery-svg.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Schematic Designer
+      <a href="Examples/index1.html" target="_blank" class="badge badge-dark">Examples</a>
+      <a href="Examples/random.html" target="_blank" class="badge badge-dark">Random</a>
+    </h1>
+
+    <div id="test" style="height:25px">state: </div>
+
+    <svg id="svg" style="border:1pt solid black">
+      <g id="svgAll">
+        <line stroke="black"></line>
+        <g id="svgComponents" class="components-canbeselected">
+          <g id="svgButton">
+            <text x="10" font-size="12">#svgButton</text>
+          </g>
+          <g id="svgSch">
+            <text x="10" font-size="12">#svgSch mousePos: (0, 0)</text>
+            <g id="svgTestAppendComponent1" transform="translate(50 50)"></g>
+            <g id="svgTestAppendComponent2" transform="translate(100 50)"></g>
+          </g>
+        </g>
+      </g>
+    </svg>
+
+  </div>
+  
+  <script src="js/config/config.js"></script>
+  <script src="js/config/props.js"></script>
+
+  <script src="js/components/components.js"></script>
+  <script src="js/components/scale.js"></script>
+  <script src="js/components/append.js"></script>
+  <script src="js/components/define.js"></script>
+  <script src="js/schematic/schematic.js"></script>
+  <script src="js/events/events.js"></script>
+  <script src="js/events/connection.js"></script>
+
+  <script src="js/defineComponents.js"></script>
+  <script src="js/main.js"></script>
+
+  
+  <script src="js/test/test.js"></script>
+  
+</body>
+
+</html>
