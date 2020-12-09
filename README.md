@@ -61,6 +61,6 @@ Web Plotter
 | external/bootstrap/ | 著名的CSS框架 |
 | external/jquery/ | 著名的javascript库 |
 | js/ | 自己编写的针对该项目不同模块的javascript脚本 |
-| examples/ | 一些前端编程教学样例 |
+| example/ | 一些前端编程教学样例 |
 | index.html | HTML主页 |
 | README.md | 说明文档 |
