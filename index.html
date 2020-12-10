@@ -12,22 +12,26 @@
 <body>
   <div id="container">
  
-    <div id="header" style="background-color:#FFA500;">
-      <h1 style="margin-bottom:0;">Web Plotter</h1>
+    <div id="header" style="background-color:#FFA500">
+      <h1 style="margin-bottom:0;text-align:center">Web Plotter</h1>
     </div>
      
-    <div id="menu" style="background-color:#FFD700;float:left;">
-      <button type="button" onclick="plotFreestyle()">涂鸦板</button><br>
-      <button type="button" onclick="plotFunction()">画函数</button><br>
-      <button type="button" onclick="plotGeometric()">画平面几何</button><br>
+    <div id="menu" style="float:left;width: 450px;">
+      <br>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+      <button type="button" onclick="plotFreestyle()">涂鸦板</button>&nbsp&nbsp
+      <button type="button" onclick="plotFunction()">画函数</button>&nbsp&nbsp
+      <button type="button" onclick="plotGeometric()">画平面几何</button>&nbsp&nbsp
       <button type="button" onclick="plotCurve()">画方程曲线</button>
+      <br><br>
+      
     </div>
      
-    <div id="content" style="background-color:#EEEEEE;float:left;">
-      <canvas id="canvas" height="500px" width="750px"></canvas>
+    <div id="content" style="float:left">
+      <canvas id="canvas" height="500px" width="750px" style="border-style:solid;border-width:2px"></canvas>
     </div>
      
-    <div id="footer" style="background-color:#FFA500;clear:both;text-align:center;">jcboxq@smail.nju.edu.cn</div>
+    <div id="footer" style="background-color:#FFA500;clear:both;text-align:center">jcboxq@smail.nju.edu.cn</div>
   </div>
 </body>
 
