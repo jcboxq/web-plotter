@@ -5,34 +5,46 @@
   <meta charset="UTF-8">
   <title>Web Plotter</title>
   <link rel="stylesheet" href="external/bootstrap/css/bootstrap.css">
-  <script src="external/jquery/jquery-3.5.1.js"></script>
-  <script src="external/jquery/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+  <script src="js/plotFreestyle.js"></script>
+  <script src="js/plotFunction.js"></script>
+  <script src="js/plotFunction.js"></script>
+  <script src="js/plotFunction.js"></script>
+  <script src="js/plotFunction.js"></script>
 </head>
 
 <body>
   <div id="container">
- 
+
     <div id="header" style="background-color:#FFA500">
       <h1 style="margin-bottom:0;text-align:center">Web Plotter</h1>
     </div>
-     
-    <div id="menu" style="float:left;width: 450px;">
-      <br>
-      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-      <button type="button" onclick="plotFreestyle()">涂鸦板</button>&nbsp&nbsp
-      <button type="button" onclick="plotFunction()">画函数</button>&nbsp&nbsp
-      <button type="button" onclick="plotGeometric()">画平面几何</button>&nbsp&nbsp
-      <button type="button" onclick="plotCurve()">画方程曲线</button>
-      <br><br>
-      
-    </div>
-     
+
     <div id="content" style="float:left">
       <canvas id="canvas" height="500px" width="750px" style="border-style:solid;border-width:2px"></canvas>
     </div>
-     
-    <div id="footer" style="background-color:#FFA500;clear:both;text-align:center">jcboxq@smail.nju.edu.cn</div>
+
+    <div id="menu" style="float:left;width: 450px;">
+      <br>
+      &nbsp&nbsp&nbsp
+      <button type="button" onclick="plotFreestyle()">涂鸦板</button>&nbsp&nbsp
+      <button type="button" onclick="plotFunction()">画函数</button>&nbsp&nbsp
+      <button type="button" onclick="plotGeometric()">画平面几何</button>&nbsp&nbsp
+      <button type="button" onclick="plotCurve()">画方程曲线</button>&nbsp&nbsp
+      <button type="button" onclick="clear()" style="color:red">清屏</button>
+      <br><br>
+    </div>
+
+    <div id="footer" style="background-color:#FFA500;clear:both;text-align:center">Nanjing University</div>
   </div>
+
+  <script>
+    //  获取canvas标签
+    canvas = document.getElementById('canvas');
+    //  获取 2D渲染接口
+    const ctx = canvas.getContext('2d');
+    //  将渲染颜色设置为 黑色 #000000
+    ctx.strokeStyle = '#000000';
+  </script>
 </body>
 
 </html>
