@@ -1,18 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Web Plotter</title>
-
-    <link rel="stylesheet" href="external/bootstrap/css/bootstrap.css">
-    <script src="external/jquery/jquery-3.5.1.js"></script>
-    <script src="external/jquery/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+  <meta charset="UTF-8">
+  <title>Web Plotter</title>
+  <link rel="stylesheet" href="external/bootstrap/css/bootstrap.css">
+  <script src="external/jquery/jquery-3.5.1.js"></script>
+  <script src="external/jquery/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 </head>
 
 <body>
+  <div id="container">
+ 
+    <div id="header" style="background-color:#FFA500;">
+      <h1 style="margin-bottom:0;">Web Plotter</h1>
+    </div>
+     
+    <div id="menu" style="background-color:#FFD700;float:left;">
+      <button type="button" onclick="plotFreestyle()">涂鸦板</button><br>
+      <button type="button" onclick="plotFunction()">画函数</button><br>
+      <button type="button" onclick="plotGeometric()">画平面几何</button><br>
+      <button type="button" onclick="plotCurve()">画方程曲线</button>
+    </div>
+     
+    <div id="content" style="background-color:#EEEEEE;float:left;">
+      <canvas id="canvas" height="500px" width="750px"></canvas>
+    </div>
+     
+    <div id="footer" style="background-color:#FFA500;clear:both;text-align:center;">jcboxq@smail.nju.edu.cn</div>
+  </div>
 </body>
 
 </html>
