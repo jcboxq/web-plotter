@@ -2,6 +2,21 @@
 Web Plotter
 网页版绘图器
 
+## 快速上手参考资料
+
+### 有用的手册
+
+* [HTML5 canvas 参考手册](https://www.runoob.com/tags/ref-canvas.html)
+* [JavaScript HTML DOM 事件方法](https://www.runoob.com/js/js-htmldom-eventlistener.html)
+
+### 魔改素材
+
+目前找到两个
+* 涂鸦板，在[examples/plot_freestyle.html](https://github.com/jcboxq/web-plotter/blob/main/examples/plot_freestyle.html)
+* 画函数，在[examples/plot_function](https://github.com/jcboxq/web-plotter/tree/main/examples/plot_function)
+
+把仓库 clone 到本地后，用浏览器打开相应 .html 文件可查看效果。
+
 ## 代码规范（重要）
 
 ### 代码格式化
@@ -39,21 +54,15 @@ Web Plotter
 
 ## 进度
 
-以下斜体部分可先不完成
-
-- [ ] 画板：用户可选择**拖动坐标系位置**或**画笔**
-- [ ] 函数：用户给定 f(x) 和 x 的初始范围
-    - [ ] *用户鼠标滑轮改变 x 的取值范围*
-- [ ] 平面几何：用户选择画圆或者多边形
-    - [ ] 画圆：用户给定圆心和半径
-    - [ ] 多边形：用户鼠标点击选择顶点位置
-- [ ] 曲线：用户选择绘制一次或者二次（圆锥）曲线；用户给定相应方程系数；我们视情况确定 x 的取值范围
-
-未完待续...
+- [ ] 涂鸦板
+- [ ] 画函数：用户给定 f(x)
+    - [ ] 用户鼠标滑轮、拖动改变可视范围
+- [ ] 画平面几何：用户选择画固定形状或者任意多边形（参考 Word 的“插入形状”功能）
+    - [ ] 画固定形状（三角形、矩形、圆）：用户在画布上框选绘制区域
+    - [ ] 画任意多边形：用户鼠标点击选择顶点位置
+- [ ] 画方程曲线：用户给定圆锥曲线方程系数，我们视情况确定初始可视范围
 
 ## 目录结构
-
-表格是一些重要的简略说明，有必要详细说明的附在后续的几个小标题中。
 
 | 目录 | 说明 |
 | --- | --- |
