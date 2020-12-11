@@ -19,7 +19,8 @@ function InitThis() {
   $('#myCanvas').mouseup(function (e) {
     mousePressed = false;
   });
-    $('#myCanvas').mouseleave(function (e) {
+
+  $('#myCanvas').mouseleave(function (e) {
     mousePressed = false;
   });
 }

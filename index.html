@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Web Plotter</title>
-  <link rel="stylesheet" href="external/bootstrap/css/bootstrap.css">
+  <script src="external/jquery/jquery-3.5.1.js"></script>
   <script src="js/plotFreestyle.js"></script>
   <script src="js/plotFunction.js"></script>
   <script src="js/plotFunction.js"></script>
@@ -19,11 +19,11 @@
       <h1 style="margin-bottom:0;text-align:center">Web Plotter</h1>
     </div>
 
-    <div align="center" id="content" style="float:left">
+    <div id="content" align="center" style="float:left">
       <canvas id="myCanvas" height="500px" width="750px" style="border:2px solid #6699cc"></canvas>
     </div>
 
-    <div id="menu" style="float:left;width: 450px;">
+    <div id="menu" align="center" style="float:left;width: 450px;">
       <br>
       &nbsp&nbsp&nbsp
       <button type="button" onclick="plotFreestyle()">涂鸦板</button>&nbsp&nbsp
@@ -38,12 +38,8 @@
   </div>
 
   <script>
-    //  获取canvas标签
-    canvas = document.getElementById('canvas');
     //  获取 2D渲染接口
-    const ctx = canvas.getContext('2d');
-    //  将渲染颜色设置为 黑色 #000000
-    ctx.strokeStyle = '#000000';
+    var ctx = document.getElementById('myCanvas').getContext("2d");
   </script>
 </body>
 
