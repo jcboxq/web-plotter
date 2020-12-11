@@ -11,11 +11,11 @@ Web Plotter
 
 ### 魔改素材
 
-目前找到两个
+目前找到两个，把仓库 clone 到本地后，用浏览器打开相应 .html 文件可查看效果。
+
 * 涂鸦板，在[examples/plot_freestyle.html](https://github.com/jcboxq/web-plotter/blob/main/examples/plot_freestyle.html)
 * 画函数，在[examples/plot_function](https://github.com/jcboxq/web-plotter/tree/main/examples/plot_function)
 
-把仓库 clone 到本地后，用浏览器打开相应 .html 文件可查看效果。
 
 ## 代码规范（重要）
 
