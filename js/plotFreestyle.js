@@ -1,62 +1,48 @@
 function plotFreestyle() {
-  //  线段开始位置
-  startP = {x: 0, y: 0};
-  //  线段结束位置
-  endP = {x: 0, y: 0};
-  //  添加 mousedown 事件
-  canvas.addEventListener('mousedown', mousedown);
-  //  添加 mouseup 事件
-  canvas.addEventListener('mouseup', mouseup);
-  //  添加 mouseleave 事件
-  canvas.addEventListener('mouseleave',mouseleave);
+  var mousePressed = false;
+  var lastX, lastY;
+  var ctx;
+  InitThis(mousePressed, lastX, lastY, ctx);
 }
 
-/**
- * @summary 按下鼠标右键发生的事件
- */
-function mousedown(e) {
-  //  将线段开始位置设为鼠标点击的位置
-  startP = {x:e.clientX,y:e.clientY};
-  //  将画笔移到始点
-  ctx.moveTo(startP.x, startP.y);
-  console.log('Mouse down.');
-  canvas.addEventListener('mousemove', mousemove);
+function InitThis(mousePressed, lastX, lastY, ctx) {
+  ctx = document.getElementById('myCanvas').getContext("2d");
+
+  $('#myCanvas').mousedown(function (e) {
+    mousePressed = true;
+    Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false, mousePressed, lastX, lastY, ctx);
+  });
+
+  $('#myCanvas').mousemove(function (e) {
+    if (mousePressed) {
+      Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true, mousePressed, lastX, lastY, ctx);
+    }
+  });
+
+  $('#myCanvas').mouseup(function (e) {
+    mousePressed = false;
+  });
+    $('#myCanvas').mouseleave(function (e) {
+    mousePressed = false;
+  });
 }
 
-/**
- * mouse move event
- * @param e
- */
-function mousemove(e) {
-      ctx.beginPath();
-      ctx.moveTo(startP.x, startP.y);
-      //  设置线段终点
-      endP = {x:e.clientX,y:e.clientY};
-      console.log(JSON.stringify(startP) + ',' + JSON.stringify(endP));
-      //  告诉画笔线段终点位置
-      ctx.lineTo(endP.x, endP.y);
-      //  画线段
-      ctx.stroke();
-      //  将下一条线段起点设置为当前线段的终点
-      startP = endP;
-      ctx.moveTo(startP.x, startP.y);
+function Draw(x, y, isDown, mousePressed, lastX, lastY, ctx) {
+  if (isDown) {
+    ctx.beginPath();
+    ctx.strokeStyle = $('#selColor').val();
+    ctx.lineWidth = $('#selWidth').val();
+    ctx.lineJoin = "round";
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.closePath();
+    ctx.stroke();
+  }
+  lastX = x; lastY = y;
 }
 
-/**
- * @summary 鼠标释放时后，停止画图
- * @param e mouseup event handler
- */
-function mouseup(e) {
-  console.log('Mouse up.');
-  canvas.removeEventListener('mousemove', mousemove);
-  //clearInterval(interval);
-}
-
-/**
- * @summary 鼠标离开画布后，停止画图
- * @param e
- */
-function mouseleave(e) {
-  canvas.removeEventListener('mousemove',mousemove);
-  console.log('Mouse leave.')
-}
+function clearArea(mousePressed, lastX, lastY, ctx) {
+  // Use the identity matrix while clearing the canvas
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+} 
