@@ -16,6 +16,27 @@ Web Plotter
 * 涂鸦板，在[examples/plot_freestyle.html](https://github.com/jcboxq/web-plotter/blob/main/examples/plot_freestyle.html)
 * 画函数，在[examples/plot_function](https://github.com/jcboxq/web-plotter/tree/main/examples/plot_function)
 
+## 进度
+
+- [ ] 涂鸦板
+- [ ] 画函数：用户给定 f(x)
+    - [ ] 用户鼠标滑轮、拖动改变可视范围
+- [ ] 画平面几何：用户选择画固定形状或者任意多边形（参考 Word 的“插入形状”功能）
+    - [ ] 画固定形状（三角形、矩形、圆）：用户在画布上框选绘制区域
+    - [ ] 画任意多边形：用户鼠标点击选择顶点位置
+- [ ] 画方程曲线：用户给定圆锥曲线方程系数，我们视情况确定初始可视范围
+
+## 目录结构
+
+| 目录 | 说明 |
+| --- | --- |
+| external/ | 外部依赖库 |
+| external/bootstrap/ | 著名的CSS框架 |
+| external/jquery/ | 著名的javascript库 |
+| js/ | 自己编写的针对该项目不同模块的javascript脚本 |
+| examples/ | 一些前端编程教学样例 |
+| index.html | HTML主页 |
+| README.md | 说明文档 |
 
 ## 代码规范（重要）
 
@@ -51,25 +72,3 @@ Web Plotter
 
 1. 将本项目 `clone` 到本地
 1. 多人协作开发时，最好一打开电脑，马上先 `pull`，拉取最新的。然后进行常规开发，开发完毕之后，在 `commit` 之前，也使用 `pull` 再拉取一遍。随后再 `commit` , `push`
-
-## 进度
-
-- [ ] 涂鸦板
-- [ ] 画函数：用户给定 f(x)
-    - [ ] 用户鼠标滑轮、拖动改变可视范围
-- [ ] 画平面几何：用户选择画固定形状或者任意多边形（参考 Word 的“插入形状”功能）
-    - [ ] 画固定形状（三角形、矩形、圆）：用户在画布上框选绘制区域
-    - [ ] 画任意多边形：用户鼠标点击选择顶点位置
-- [ ] 画方程曲线：用户给定圆锥曲线方程系数，我们视情况确定初始可视范围
-
-## 目录结构
-
-| 目录 | 说明 |
-| --- | --- |
-| external/ | 外部依赖库 |
-| external/bootstrap/ | 著名的CSS框架 |
-| external/jquery/ | 著名的javascript库 |
-| js/ | 自己编写的针对该项目不同模块的javascript脚本 |
-| examples/ | 一些前端编程教学样例 |
-| index.html | HTML主页 |
-| README.md | 说明文档 |
