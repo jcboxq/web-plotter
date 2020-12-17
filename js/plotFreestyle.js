@@ -1,8 +1,6 @@
 function plotFreestyle() {
-  InitThis();
-}
+  $('#menu').append("<input type='color'/>");
 
-function InitThis() {
   var mousePressed = false;
   var lastX = 0, lastY = 0;
 
