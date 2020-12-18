@@ -10,6 +10,7 @@
   <script src="js/plotFunction.js"></script>
   <script src="js/plotFunction.js"></script>
   <script src="js/plotFunction.js"></script>
+  <script src="js/plotFunction.js"></script>
 </head>
 
 <body>
@@ -19,28 +20,40 @@
       <h1 style="margin-bottom:0;text-align:center">Web Plotter</h1>
     </div>
 
-    <div id="content" align="center" style="float:left">
+    <div id="content" align="center" style="float: left">
       <canvas id="myCanvas" height="500px" width="750px" style="border:2px solid #6699cc"></canvas>
     </div>
 
-    <div id="menu" align="center" style="float:left">
+    <div id="menu" align="center" style="float: left;height: 500px;border:2px solid #6699cc">
       <br>
-      &nbsp&nbsp&nbsp
-      <button type="button" onclick="plotFreestyle()">涂鸦板</button>&nbsp&nbsp
-      <button type="button" onclick="plotFunction()">画函数</button>&nbsp&nbsp
-      <button type="button" onclick="plotGeometric()">插入图形</button>&nbsp&nbsp
-      <button type="button" onclick="plotCurve()">画方程曲线</button>&nbsp&nbsp
-      <button type="button" onclick="clearArea()" style="color:red">清屏</button>
-      <br>
-      <br>
+      &nbsp&nbsp<button type="button" onclick="plotFreestyle()">涂鸦板</button>&nbsp&nbsp<br><br>
+      &nbsp&nbsp<button type="button" onclick="plotFunction()">画函数</button>&nbsp&nbsp<br><br>
+      &nbsp&nbsp<button type="button" onclick="plotVector()">画向量</button>&nbsp&nbsp<br><br>
+      &nbsp&nbsp<button type="button" onclick="plotGeometric()">插入图形</button>&nbsp&nbsp<br><br>
+      &nbsp&nbsp<button type="button" onclick="plotCurve()">画方程曲线</button>&nbsp&nbsp<br><br>
+      &nbsp&nbsp<button type="button" onclick="clearArea()" style="color:red">清屏</button>
     </div>
+
+    <div id="panel" align="center" style="float: left;height: 500px;border:2px solid #6699cc"></div>
 
     <div id="footer" style="background-color:#FFA500;clear:both;text-align:center">Nanjing University 软工小组：靳学乾</div>
   </div>
 
   <script>
-    //  获取 2D渲染接口
-    var ctx = document.getElementById('myCanvas').getContext("2d");
+    const ctx = document.getElementById('myCanvas').getContext("2d");  //获取 2D 渲染接口
+    const funFontStyle = "10px 黑体";
+    const funMin = 1e-4;
+    const funMax = 1e8;
+    const funEPS = 1e-12;
+    const funImgWidth = document.getElementById('myCanvas').parentNode.clientWidth;
+    const funImgHeight = document.getElementById('myCanvas').parentNode.clientHeight;
+    var funXLeftValue = -funImgWidth / 100;  // x 最左的值
+    var funXRightValue = funImgWidth / 100;
+    var funYLeftValue = -funImgHeight / 100;
+    var funYRightValue = funImgHeight / 100;
+    // var tableX, tableY, countX, countY;
+    // var funStage = 0, funMouseX, funMouseY;
+    var funTmp;
   </script>
 </body>
 

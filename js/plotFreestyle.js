@@ -1,8 +1,14 @@
 function plotFreestyle() {
-  $('#menu').append("<input type='color'/>");
+  $('#myCanvas').unbind();
+  $('#panel').html('<br> Color: <input id="freestyleColor" type="color"/> <br><br> Line width: <select id="freestyleLinewidth"><option value = "1" selected = "selected" >1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select> <br><br> <button type="button" onclick="freestylePencil()">画笔</button> <br><br> <button type="button" onclick="freestyleEraser()">橡皮擦</button>');
+  freestylePencil();
+}
 
+function freestylePencil() {
   var mousePressed = false;
   var lastX = 0, lastY = 0;
+
+  $('#myCanvas').unbind();
 
   $('#myCanvas').mousedown(function (e) {
     mousePressed = true;
@@ -12,7 +18,7 @@ function plotFreestyle() {
 
   $('#myCanvas').mousemove(function (e) {
     if (mousePressed) {
-      Draw(lastX, lastY, e.pageX - $(this).offset().left, e.pageY - $(this).offset().top);
+      pencilDraw(lastX, lastY, e.pageX - $(this).offset().left, e.pageY - $(this).offset().top);
       lastX = e.pageX - $(this).offset().left;
       lastY = e.pageY - $(this).offset().top;
     }
@@ -27,10 +33,50 @@ function plotFreestyle() {
   });
 }
 
-function Draw(lastX, lastY, x, y) {
+function pencilDraw(lastX, lastY, x, y) {
   ctx.beginPath();
-  ctx.strokeStyle = $('#selColor').val();
-  ctx.lineWidth = $('#selWidth').val();
+  ctx.strokeStyle = $('#freestyleColor').val();
+  ctx.lineWidth = $('#freestyleLinewidth').val();
+  ctx.lineJoin = "round";
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(x, y);
+  ctx.closePath();
+  ctx.stroke();
+}
+
+function freestyleEraser() {
+  var mousePressed = false;
+  var lastX = 0, lastY = 0;
+
+  $('#myCanvas').unbind();
+
+  $('#myCanvas').mousedown(function (e) {
+    mousePressed = true;
+    lastX = e.pageX - $(this).offset().left;
+    lastY = e.pageY - $(this).offset().top;
+  });
+
+  $('#myCanvas').mousemove(function (e) {
+    if (mousePressed) {
+      eraserDraw(lastX, lastY, e.pageX - $(this).offset().left, e.pageY - $(this).offset().top);
+      lastX = e.pageX - $(this).offset().left;
+      lastY = e.pageY - $(this).offset().top;
+    }
+  });
+
+  $('#myCanvas').mouseup(function (e) {
+    mousePressed = false;
+  });
+
+  $('#myCanvas').mouseleave(function (e) {
+    mousePressed = false;
+  });
+}
+
+function eraserDraw(lastX, lastY, x, y) {
+  ctx.beginPath();
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = "5";
   ctx.lineJoin = "round";
   ctx.moveTo(lastX, lastY);
   ctx.lineTo(x, y);
