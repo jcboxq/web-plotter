@@ -27,33 +27,65 @@
     <div id="menu" align="center" style="float: left;height: 500px;border:2px solid #6699cc">
       <br>
       &nbsp&nbsp<button type="button" onclick="plotFreestyle()">涂鸦板</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp<button type="button" onclick="plotFunction()">画函数</button>&nbsp&nbsp<br><br>
       &nbsp&nbsp<button type="button" onclick="plotVector()">画向量</button>&nbsp&nbsp<br><br>
       &nbsp&nbsp<button type="button" onclick="plotGeometric()">插入图形</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp<button type="button" onclick="plotCurve()">画方程曲线</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp<button type="button" onclick="clearArea()" style="color:red">清屏</button>
+      &nbsp&nbsp<button type="button" onclick="plotGrid()">显示网格</button>&nbsp&nbsp<br><br>
+      &nbsp&nbsp<button type="button" onclick="clearArea()" style="color:red">清屏</button>&nbsp&nbsp
     </div>
 
-    <div id="panel" align="center" style="float: left;height: 500px;border:2px solid #6699cc"></div>
+    <div id="slavePanel" align="center" style="float: left;height: 500px;border:1px solid #6699cc"></div>
+
+    <div id="masterPanel" align="center" style="float: left;border:2px solid #6699cc">
+      <br>
+      <b>函数绘制控制面板</b>
+      <br><br>
+      <button onclick="addFun()">添加函数</button>
+      <button onclick="drawFun()">作图</button>
+      <button onclick="changeTable()">显示网格</button>
+      <br><br>
+      X：<input id="funXLeftValue" /> ~ <input id="funXRightValue" />
+      <br>
+      Y：<input id="funYLeftValue" /> ~ <input id="funYRightValue" />
+      <br><br>
+      <span id="mod" style="display:none" name="0">
+        <input type="color"/> y =
+        <input type="text" value="sin(x)" name="Fun"/>
+        <button onclick="deleteFun(this.parentNode)">Delete</button>
+        <input type="checkbox" onclick="reDraw()" checked="checked"/>Draw Line
+      </span>
+    </div>
+
+    <div id="masterPanel" align="center" style="float: left;border:2px solid #6699cc">
+      <br>
+      <b>方程曲线控制面板</b>
+      <br><br>
+    </div>
 
     <div id="footer" style="background-color:#FFA500;clear:both;text-align:center">Nanjing University 软工小组：靳学乾</div>
   </div>
 
   <script>
     const ctx = document.getElementById('myCanvas').getContext("2d");  //获取 2D 渲染接口
-    const funFontStyle = "10px 黑体";
     const funMin = 1e-4;
     const funMax = 1e8;
     const funEPS = 1e-12;
-    const funImgWidth = document.getElementById('myCanvas').parentNode.clientWidth;
-    const funImgHeight = document.getElementById('myCanvas').parentNode.clientHeight;
-    var funXLeftValue = -funImgWidth / 100;  // x 最左的值
-    var funXRightValue = funImgWidth / 100;
-    var funYLeftValue = -funImgHeight / 100;
-    var funYRightValue = funImgHeight / 100;
-    // var tableX, tableY, countX, countY;
-    // var funStage = 0, funMouseX, funMouseY;
+    const funImgWidth = document.getElementById('myCanvas').width;
+    const funImgHeight = document.getElementById('myCanvas').height;
+
+    var useFreestyle = false;  //是否用涂鸦板
+    var useVector = false;  //是否用画向量
+    var useGeometric = false;  //是否用插入图形
+
+    var funWithTable = true;  //是否带网格
+    var useGrid = true;  //是否带网格
+
+    var funXLeftValue = -funImgWidth / 100;  // x 初始范围左边界
+    var funXRightValue = -funXLeftValue;  // x 初始范围右边界
+    var funYLeftValue = -funImgHeight / 100;  // y 初始范围左边界
+    var funYRightValue = -funYLeftValue;  // y 初始范围右边界
     var funTmp;
+
+    plotFunction();
   </script>
 </body>
 
