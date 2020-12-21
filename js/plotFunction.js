@@ -1,21 +1,21 @@
 function plotFunction() {
 
-  $('#myCanvas').unbind();
-  document.getElementById('myCanvas').onmousedown = null;
-  document.getElementById('myCanvas').onmousemove = null;
-  document.getElementById('myCanvas').onmouseup = null;
-  document.getElementById('myCanvas').onmouseleave = null;
-  document.getElementById('myCanvas').onmousewheel = null;
+  $('#funCanvas').unbind();
+  document.getElementById('funCanvas').onmousedown = null;
+  document.getElementById('funCanvas').onmousemove = null;
+  document.getElementById('funCanvas').onmouseup = null;
+  document.getElementById('funCanvas').onmouseleave = null;
+  document.getElementById('funCanvas').onmousewheel = null;
 
   var funStage = 0, mouseX, mouseY;
 
-  document.getElementById('myCanvas').onmousedown = function (ob) {
+  document.getElementById('funCanvas').onmousedown = function (ob) {
     mouseX = ob.layerX;
     mouseY = ob.layerY;
     funStage = 1;
   }
 
-  document.getElementById('myCanvas').onmousemove = function (ob) {
+  document.getElementById('funCanvas').onmousemove = function (ob) {
     if (funStage != 1) {
       return;
     }
@@ -34,21 +34,21 @@ function plotFunction() {
     updateText();
   }
 
-  document.getElementById('myCanvas').onmouseup = function (ob) {
+  document.getElementById('funCanvas').onmouseup = function (ob) {
     if (funStage == 1) {
       funStage = 0;
       drawFun();
     }
   }
 
-  document.getElementById('myCanvas').onmouseleave = function (ob) {
+  document.getElementById('funCanvas').onmouseleave = function (ob) {
     if (funStage == 1) {
       funStage = 0;
       reDraw();
     }
   }
 
-  document.getElementById('myCanvas').onmousewheel = function(ob) {
+  document.getElementById('funCanvas').onmousewheel = function(ob) {
     // 取消事件的默认动作
     ob.preventDefault();
     // 放大的比例

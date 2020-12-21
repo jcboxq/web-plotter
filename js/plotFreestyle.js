@@ -1,12 +1,12 @@
 function plotFreestyle() {
   useFreestyle = !useFreestyle;
   if (useFreestyle) {
-    $('#myCanvas').unbind();
-    document.getElementById('myCanvas').onmousedown = null;
-    document.getElementById('myCanvas').onmousemove = null;
-    document.getElementById('myCanvas').onmouseup = null;
-    document.getElementById('myCanvas').onmouseleave = null;
-    document.getElementById('myCanvas').onmousewheel = null;
+    $('#funCanvas').unbind();
+    document.getElementById('funCanvas').onmousedown = null;
+    document.getElementById('funCanvas').onmousemove = null;
+    document.getElementById('funCanvas').onmouseup = null;
+    document.getElementById('funCanvas').onmouseleave = null;
+    document.getElementById('funCanvas').onmousewheel = null;
 
     $('#slavePanel').html('<br> Color: <input id="freestyleColor" type="color"/> <br><br> Line width: <select id="freestyleLinewidth"><option value = "1" selected = "selected" >1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select> <br><br> <button type="button" onclick="freestylePencil()">画笔</button> <br><br> <button type="button" onclick="freestyleEraser()">橡皮擦</button>');
     freestylePencil();
@@ -20,15 +20,15 @@ function freestylePencil() {
   var mousePressed = false;
   var lastX = 0, lastY = 0;
 
-  $('#myCanvas').unbind();
+  $('#funCanvas').unbind();
 
-  $('#myCanvas').mousedown(function (e) {
+  $('#funCanvas').mousedown(function (e) {
     mousePressed = true;
     lastX = e.pageX - $(this).offset().left;
     lastY = e.pageY - $(this).offset().top;
   });
 
-  $('#myCanvas').mousemove(function (e) {
+  $('#funCanvas').mousemove(function (e) {
     if (mousePressed) {
       pencilDraw(lastX, lastY, e.pageX - $(this).offset().left, e.pageY - $(this).offset().top);
       lastX = e.pageX - $(this).offset().left;
@@ -36,11 +36,11 @@ function freestylePencil() {
     }
   });
 
-  $('#myCanvas').mouseup(function (e) {
+  $('#funCanvas').mouseup(function (e) {
     mousePressed = false;
   });
 
-  $('#myCanvas').mouseleave(function (e) {
+  $('#funCanvas').mouseleave(function (e) {
     mousePressed = false;
   });
 }
@@ -60,15 +60,15 @@ function freestyleEraser() {
   var mousePressed = false;
   var lastX = 0, lastY = 0;
 
-  $('#myCanvas').unbind();
+  $('#funCanvas').unbind();
 
-  $('#myCanvas').mousedown(function (e) {
+  $('#funCanvas').mousedown(function (e) {
     mousePressed = true;
     lastX = e.pageX - $(this).offset().left;
     lastY = e.pageY - $(this).offset().top;
   });
 
-  $('#myCanvas').mousemove(function (e) {
+  $('#funCanvas').mousemove(function (e) {
     if (mousePressed) {
       eraserDraw(lastX, lastY, e.pageX - $(this).offset().left, e.pageY - $(this).offset().top);
       lastX = e.pageX - $(this).offset().left;
@@ -76,11 +76,11 @@ function freestyleEraser() {
     }
   });
 
-  $('#myCanvas').mouseup(function (e) {
+  $('#funCanvas').mouseup(function (e) {
     mousePressed = false;
   });
 
-  $('#myCanvas').mouseleave(function (e) {
+  $('#funCanvas').mouseleave(function (e) {
     mousePressed = false;
   });
 }

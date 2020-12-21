@@ -21,7 +21,15 @@
     </div>
 
     <div id="content" align="center" style="float: left">
-      <canvas id="myCanvas" height="500px" width="750px" style="border:2px solid #6699cc"></canvas>
+      <canvas id="gridCanvas" height="500px" width="500px" style="border:2px solid #6699cc; position: absolute;"></canvas>
+      <script>
+        var canvasLeft = $("#funCanvas").offset().left;
+        var canvasTop = $("#funCanvas").offset().top;
+      </script>
+      <canvas id="funCanvas" height="500px" width="500px" style="border:2px solid #6699cc; background: #ffffff;"></canvas>
+      <script>
+        $("#gridCanvas").offset({top:canvasTop,left:canvasLeft});
+      </script>
     </div>
 
     <div id="menu" align="center" style="float: left;height: 500px;border:2px solid #6699cc">
@@ -65,12 +73,12 @@
   </div>
 
   <script>
-    const ctx = document.getElementById('myCanvas').getContext("2d");  //获取 2D 渲染接口
+    const ctx = document.getElementById('funCanvas').getContext("2d");  //获取 2D 渲染接口
     const funMin = 1e-4;
     const funMax = 1e8;
     const funEPS = 1e-12;
-    const funImgWidth = document.getElementById('myCanvas').width;
-    const funImgHeight = document.getElementById('myCanvas').height;
+    const funImgWidth = document.getElementById('funCanvas').width;
+    const funImgHeight = document.getElementById('funCanvas').height;
 
     var useFreestyle = false;  //是否用涂鸦板
     var useVector = false;  //是否用画向量
