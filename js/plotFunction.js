@@ -1,27 +1,19 @@
 function plotFunction() {
-
-  $('#funCanvas').unbind();
-  document.getElementById('funCanvas').onmousedown = null;
-  document.getElementById('funCanvas').onmousemove = null;
-  document.getElementById('funCanvas').onmouseup = null;
-  document.getElementById('funCanvas').onmouseleave = null;
-  document.getElementById('funCanvas').onmousewheel = null;
-
   var funStage = 0, mouseX, mouseY;
 
-  document.getElementById('funCanvas').onmousedown = function (ob) {
-    mouseX = ob.layerX;
-    mouseY = ob.layerY;
+  funCanvas.addEventListener('mousedown', funMouseDown = function (ob) {
+    mouseX = ob.offsetX + 1;
+    mouseY = ob.offsetY + 1;
     funStage = 1;
-  }
+  });
 
-  document.getElementById('funCanvas').onmousemove = function (ob) {
+  funCanvas.addEventListener('mousemove', funMouseMove = function (ob) {
     if (funStage != 1) {
       return;
     }
     var NoX, NoY, det;
-    NoX = ob.layerX;
-    NoY = ob.layerY;
+    NoX = ob.offsetX + 1;
+    NoY = ob.offsetY + 1;
     det = (mouseX - NoX) / funImgWidth * (funXRightValue - funXLeftValue);
     funXLeftValue += det;
     funXRightValue += det;
@@ -30,51 +22,61 @@ function plotFunction() {
     funYRightValue += det;
     mouseX = NoX;
     mouseY = NoY;
-    reDraw();
+    reDrawFun();
     updateText();
-  }
+    if (useGrid) {
+      reDrawGrid();
+    }
+  });
 
-  document.getElementById('funCanvas').onmouseup = function (ob) {
+  funCanvas.addEventListener('mouseup', funMouseUp = function (ob) {
     if (funStage == 1) {
       funStage = 0;
-      drawFun();
     }
-  }
+  });
 
-  document.getElementById('funCanvas').onmouseleave = function (ob) {
+  funCanvas.addEventListener('mouseleave', funMouseLeave = function (ob) {
     if (funStage == 1) {
       funStage = 0;
-      reDraw();
+      reDrawFun();
+      if (useGrid) {
+        reDrawGrid();
+      }
     }
-  }
+  });
 
-  document.getElementById('funCanvas').onmousewheel = function(ob) {
+  funCanvas.addEventListener('mousewheel', funMouseWheel = function (ob) {
     // 取消事件的默认动作
     ob.preventDefault();
     // 放大的比例
     var ScaleRate = 0.9;
     var detail;
-    if(ob.wheelDelta) {
+    if (ob.wheelDelta) {
       detail = ob.wheelDelta;
-    } else if(ob.detail) {
+    } else if (ob.detail) {
       detail = ob.detail;
     }
-    if(detail > 0) {
+    if (detail > 0) {
       scale(ob.layerX, funImgHeight - 1 - ob.layerY, ScaleRate);
     } else {
       scale(ob.layerX, funImgHeight - 1 - ob.layerY, 1 / ScaleRate);
     }
-    reDraw();
+    reDrawFun();
     updateText();
-  }
-  
+    if (useGrid) {
+      reDrawGrid();
+    }
+  });
+
   // 初始化
-  // if (fun_num == 0) {
-    
-  // }
   updateText();
   drawFun();
-  addFun();
+  if (useGrid) {
+    drawGrid();
+  }
+  // if (fun_num == 0) {
+  //   addFun();
+  // }
 }
 
 //  获取随机颜色
@@ -218,165 +220,6 @@ function singleCal(c, a, b) {
   }
 }
 
-function changeTable() {
-  funWithTable = !funWithTable;
-  if (funWithTable) {
-    getTable();
-  } else {
-    clearTable();
-    // drawFun();
-  }
-}
-
-function getTable() {
-  var tableX, tableY, countX, countY;
-  funTmp = (funXRightValue - funXLeftValue + funEPS) / 20;
-
-  tableX = 1;
-  countX = 0;
-  countY = 0;
-  while(tableX < funTmp) {
-    tableX *= 10;
-  }
-  while(tableX / 10 > funTmp) {
-    tableX /= 10;
-    countX++;
-  }
-  if(tableX >= 1) {
-    countX = 0;
-  }
-  if(tableX / 5 > funTmp) {
-    tableX /= 5;
-    countX++;
-  } else if(tableX / 2 > funTmp) {
-    tableX /= 2;
-    countX++;
-  }
-  var i = parseInt(funXLeftValue / tableX) + (funXLeftValue > 0)
-  for(; i * tableX < funXRightValue; i++) {
-    if(i == 0) {
-      // y轴
-      ctx.fillStyle = "black";
-    } else {
-      // 普通竖线
-      ctx.fillStyle = "#CDB7B5";
-    }
-    funTmp = (i * tableX - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-    var _width = 1;
-    var _height = funImgHeight;
-    ctx.fillRect(funTmp, 0, _width, _height);
-    // 竖线上的数字
-    ctx.fillStyle = "blue";
-    ctx.font = "10px 黑体";
-    var _text = (i * tableX).toFixed(countX);
-    var _x = funTmp + 2;
-    var _y = 10;
-    ctx.fillText(_text, _x, _y);
-  }
-  funTmp = (funYRightValue - funYLeftValue + funEPS) / 20;
-  tableY = 1;
-
-  while(tableY < funTmp) {
-    tableY *= 10;
-  }
-  while(tableY / 10 > funTmp) {
-    tableY /= 10, countY++;
-  }
-  if(tableY / 5 > funTmp) {
-    tableY /= 5, countY++;
-  } else if(tableY / 2 > funTmp) {
-    tableY /= 2, countY++;
-  }
-  if(tableY >= 1) {
-    countY = 0;
-  }
-  var i = parseInt(funYLeftValue / tableY) + (funYLeftValue > 0);
-  for(; i * tableY < funYRightValue; i++) {
-    // 横线
-    if(i == 0) {
-      // x轴
-      ctx.fillStyle = "black";
-    } else {
-      // 普通横线
-      ctx.fillStyle = "#CDB7B5";
-    }
-    funTmp = (i * tableY - funYLeftValue) / (funYRightValue - funYLeftValue) * funImgHeight;
-    ctx.fillRect(0, funImgHeight - 1 - funTmp, funImgWidth, 1);
-    // 横线上的数字
-    ctx.fillStyle = "blue";
-    ctx.font = "10px 黑体";
-    ctx.fillText((i * tableY).toFixed(countY), 0, funImgHeight - 1 - funTmp);
-  }
-}
-
-function clearTable() {
-  var tableX, tableY, countX, countY;
-  funTmp = (funXRightValue - funXLeftValue + funEPS) / 20;
-
-  tableX = 1;
-  countX = 0;
-  countY = 0;
-  while(tableX < funTmp) {
-    tableX *= 10;
-  }
-  while(tableX / 10 > funTmp) {
-    tableX /= 10;
-    countX++;
-  }
-  if(tableX >= 1) {
-    countX = 0;
-  }
-  if(tableX / 5 > funTmp) {
-    tableX /= 5;
-    countX++;
-  } else if(tableX / 2 > funTmp) {
-    tableX /= 2;
-    countX++;
-  }
-  var i = parseInt(funXLeftValue / tableX) + (funXLeftValue > 0)
-  for (; i * tableX < funXRightValue; i++) {
-    //清除竖线
-    funTmp = (i * tableX - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-    var _width = 3;
-    var _height = funImgHeight;
-    ctx.clearRect(funTmp-1, 0, _width, _height);
-    //清除竖线上的数字
-    ctx.fillStyle = "white";
-    ctx.font = "10px 黑体";
-    var _text = (i * tableX).toFixed(countX);
-    var _x = funTmp + 2;
-    var _y = 10;
-    ctx.fillText(_text, _x, _y);
-  }
-  funTmp = (funYRightValue - funYLeftValue + funEPS) / 20;
-  tableY = 1;
-
-  while(tableY < funTmp) {
-    tableY *= 10;
-  }
-  while(tableY / 10 > funTmp) {
-    tableY /= 10, countY++;
-  }
-  if(tableY / 5 > funTmp) {
-    tableY /= 5, countY++;
-  } else if(tableY / 2 > funTmp) {
-    tableY /= 2, countY++;
-  }
-  if(tableY >= 1) {
-    countY = 0;
-  }
-  var i = parseInt(funYLeftValue / tableY) + (funYLeftValue > 0);
-  for(; i * tableY < funYRightValue; i++) {
-    //清除横线
-    funTmp = (i * tableY - funYLeftValue) / (funYRightValue - funYLeftValue) * funImgHeight;
-    ctx.clearRect(0, funImgHeight - 1 - (funTmp + 1), funImgWidth, 3);
-    //清除横线上的数字
-    ctx.fillStyle = "white";
-    ctx.font = "10px 黑体";
-    ctx.fillText((i * tableY).toFixed(countY), 0, funImgHeight - 1 - funTmp);
-  }
-}
-
 function drawArc(x, y) {
   ctx.beginPath();
   // arc(弧形),画圆
@@ -393,11 +236,8 @@ function drawLine(lx, ly, px, py) {
   ctx.stroke(); // 绘制
 }
 
-function reDraw() {
+function reDrawFun() {
   ctx.clearRect(0, 0, funImgWidth, funImgHeight);
-  if (funWithTable) {
-    getTable();
-  }
   getFunction();
 }
 
@@ -406,7 +246,14 @@ function drawFun() {
   funXRightValue = parseFloat(document.getElementById("funXRightValue").value);
   funYLeftValue = parseFloat(document.getElementById("funYLeftValue").value);
   funYRightValue = parseFloat(document.getElementById("funYRightValue").value);
-  reDraw();
+  reDrawFun();
+}
+
+function drawFunAndGrid() {
+  drawFun();
+  if (useGrid) {
+    drawGrid();
+  }
 }
 
 function updateText() {
@@ -440,7 +287,7 @@ function Calc(fun, X, Value) {
     F = new Array(),
     now = 0,
     f = "",
-    funTmp, a, b, sign = 1,
+    tmp, a, b, sign = 1,
     base = 0,
     j;
   for(var i = 0; i < fun.length; i++) {
@@ -458,11 +305,11 @@ function Calc(fun, X, Value) {
       now = 0;
       sign = 1;
       base = 0;
-      while((funTmp = opt.pop()) != '(') {
+      while((tmp = opt.pop()) != '(') {
         b = number.pop();
         a = number.pop();
-        funTmp = singleCal(funTmp, a, b);
-        number.push(funTmp);
+        tmp = singleCal(tmp, a, b);
+        number.push(tmp);
       }
       now = charFunCal(F.pop(), number.pop());
     } else
@@ -496,8 +343,8 @@ function Calc(fun, X, Value) {
       while(s <= priority(opt[opt.length - 1])) {
         b = number.pop();
         a = number.pop();
-        funTmp = singleCal(opt.pop(), a, b);
-        number.push(funTmp);
+        tmp = singleCal(opt.pop(), a, b);
+        number.push(tmp);
       }
       opt.push(fun[i]);
     }
@@ -506,8 +353,8 @@ function Calc(fun, X, Value) {
   while(opt.length > 0) {
     b = number.pop();
     a = number.pop();
-    funTmp = singleCal(opt.pop(), a, b);
-    number.push(funTmp);
+    tmp = singleCal(opt.pop(), a, b);
+    number.push(tmp);
   }
   return number.pop();
 }
@@ -519,7 +366,7 @@ function getFunction() {
   var lax, lay;
   var px, py
   var color, outSide, type
-  var ValueL, ValueR, ValueS, isDrawLine, funTmp, funTmp;
+  var ValueL, ValueR, ValueS, isDrawLine, tmp, tmp;
 
   for(var k = 1; k < group.length; k++) {
 
