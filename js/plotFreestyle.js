@@ -24,15 +24,19 @@ function plotFreestyle() {
   } else {// 关闭涂鸦板辅助功能
 
     // 关掉画笔和橡皮擦事件
-    funCanvas.removeEventListener('mousedown', fsPencilMouseDown);
-    funCanvas.removeEventListener('mousemove', fsPencilMouseMove);
-    funCanvas.removeEventListener('mouseup', fsPencilMouseUp);
-    funCanvas.removeEventListener('mouseleave', fsPencilMouseLeave);
+    if (typeof(fsPencilMouseDown) != "undefined") {
+      funCanvas.removeEventListener('mousedown', fsPencilMouseDown);
+      funCanvas.removeEventListener('mousemove', fsPencilMouseMove);
+      funCanvas.removeEventListener('mouseup', fsPencilMouseUp);
+      funCanvas.removeEventListener('mouseleave', fsPencilMouseLeave);
+    }
 
-    funCanvas.removeEventListener('mousedown', fsEraserMouseDown);
-    funCanvas.removeEventListener('mousemove', fsEraserMouseMove);
-    funCanvas.removeEventListener('mouseup', fsEraserMouseUp);
-    funCanvas.removeEventListener('mouseleave', fsEraserMouseLeave);
+    if (typeof(fsEraserMouseDown) != "undefined") {
+      funCanvas.removeEventListener('mousedown', fsEraserMouseDown);
+      funCanvas.removeEventListener('mousemove', fsEraserMouseMove);
+      funCanvas.removeEventListener('mouseup', fsEraserMouseUp);
+      funCanvas.removeEventListener('mouseleave', fsEraserMouseLeave);
+    }
 
     // 清空辅助功能面板
     $('#slavePanel').html('');
@@ -44,10 +48,12 @@ function plotFreestyle() {
 
 function freestylePencil() {
   // 关掉同级的橡皮擦事件
-  funCanvas.removeEventListener('mousedown', fsEraserMouseDown);
-  funCanvas.removeEventListener('mousemove', fsEraserMouseMove);
-  funCanvas.removeEventListener('mouseup', fsEraserMouseUp);
-  funCanvas.removeEventListener('mouseleave', fsEraserMouseLeave);
+  if (typeof(fsEraserMouseDown) != "undefined") {
+    funCanvas.removeEventListener('mousedown', fsEraserMouseDown);
+    funCanvas.removeEventListener('mousemove', fsEraserMouseMove);
+    funCanvas.removeEventListener('mouseup', fsEraserMouseUp);
+    funCanvas.removeEventListener('mouseleave', fsEraserMouseLeave);
+  }
 
   var mousePressed = false;
   var lastX = 0, lastY = 0;
@@ -85,10 +91,12 @@ function freestylePencil() {
 
 function freestyleEraser() {
   // 关掉同级的画笔事件
-  funCanvas.removeEventListener('mousedown', fsPencilMouseDown);
-  funCanvas.removeEventListener('mousemove', fsPencilMouseMove);
-  funCanvas.removeEventListener('mouseup', fsPencilMouseUp);
-  funCanvas.removeEventListener('mouseleave', fsPencilMouseLeave);
+  if (typeof(fsPencilMouseDown) != "undefined") {
+    funCanvas.removeEventListener('mousedown', fsPencilMouseDown);
+    funCanvas.removeEventListener('mousemove', fsPencilMouseMove);
+    funCanvas.removeEventListener('mouseup', fsPencilMouseUp);
+    funCanvas.removeEventListener('mouseleave', fsPencilMouseLeave);
+  }
 
   var mousePressed = false;
 

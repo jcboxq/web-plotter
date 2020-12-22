@@ -1,93 +1,23 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Web Plotter</title>
-  <script src="external/jquery/jquery-3.5.1.js"></script>
-  <script src="js/plotFreestyle.js"></script>
-  <script src="js/plotFunction.js"></script>
-  <script src="js/plotFunction.js"></script>
-  <script src="js/plotFunction.js"></script>
-  <script src="js/plotFunction.js"></script>
-  <script src="js/plotFunction.js"></script>
+  <title>Document</title>
 </head>
-
 <body>
-  <div id="container">
-
-    <div id="header" style="background-color:#FFA500">
-      <h1 style="margin-bottom:0;text-align:center">Web Plotter</h1>
-    </div>
-
-    <div id="content" align="center" style="float: left">
-      <canvas id="gridCanvas" height="500px" width="500px" style="background: #ffffff; border:2px solid #6699cc;"></canvas>
-    </div>
-
-    <div id="menu" align="center" style="float: left;height: 500px;border:2px solid #6699cc">
-      <br>
-      &nbsp&nbsp<button type="button" onclick="plotFreestyle()">涂鸦板</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp<button type="button" onclick="plotVector()">画向量</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp<button type="button" onclick="plotGeometric()">插入图形</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp<button type="button" onclick="plotGrid()">显示网格</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp<button type="button" onclick="clearArea()" style="color:red">清屏</button>&nbsp&nbsp
-    </div>
-
-    <div id="slavePanel" align="center" style="float: left;height: 500px;border:1px solid #6699cc"></div>
-
-    <div id="masterPanel" align="center" style="float: left;border:2px solid #6699cc">
-      <br>
-      <b>函数绘制控制面板</b>
-      <br><br>
-      <button onclick="addFun()">添加函数</button>
-      <button onclick="drawFun()">作图</button>
-      <br><br>
-      X：<input id="funXLeftValue" /> ~ <input id="funXRightValue" />
-      <br>
-      Y：<input id="funYLeftValue" /> ~ <input id="funYRightValue" />
-      <br><br>
-      <span id="mod" style="display:none" name="0">
-        <input type="color"/> y =
-        <input type="text" value="sin(x)" name="Fun"/>
-        <button onclick="deleteFun(this.parentNode)">Delete</button>
-        <input type="checkbox" onclick="reDraw()" checked="checked"/>Draw Line
-      </span>
-    </div>
-
-    <div id="masterPanel" align="center" style="float: left;border:2px solid #6699cc">
-      <br>
-      <b>方程曲线控制面板</b>
-      <br><br>
-    </div>
-
-    <div id="footer" style="background-color:#FFA500;clear:both;text-align:center">Nanjing University 软工小组：靳学乾</div>
-  </div>
-
-  <script>
-    const ctx = document.getElementById('funCanvas').getContext("2d");  //获取 2D 渲染接口
-    const ctxGrid = document.getElementById('gridCanvas').getContext("2d");  //获取 2D 渲染接口
-    ctxGrid.fillStyle = "black";
-    ctxGrid.fillRect(10, 0, 10, 100);
-    const funMin = 1e-4;
-    const funMax = 1e8;
-    const funEPS = 1e-12;
-    const funImgWidth = document.getElementById('funCanvas').width;
-    const funImgHeight = document.getElementById('funCanvas').height;
-
-    var useFreestyle = false;  //是否用涂鸦板
-    var useVector = false;  //是否用画向量
-    var useGeometric = false;  //是否用插入图形
-
-    var useGrid = false;  //是否带网格
-
-    var funXLeftValue = -funImgWidth / 100;  // x 初始范围左边界
-    var funXRightValue = -funXLeftValue;  // x 初始范围右边界
-    var funYLeftValue = -funImgHeight / 100;  // y 初始范围左边界
-    var funYRightValue = -funYLeftValue;  // y 初始范围右边界
-
-    // plotFunction();
-    plotGrid();
+  <button type="submit" class="login" id="btn">确定</button>
+  <script type="text/javascript">
+    // function handler() {
+    //   console.log("Event happen!!!");
+    // }
+    if (typeof(handler) == "undefined"){
+      console.log("haha");
+    }
+    btn.addEventListener('click', handler);
+    btn.addEventListener('click', handler);
+    btn.addEventListener('click', handler);
+    // btn.removeEventListener('click', handler);
+    // btn.removeEventListener('click', handler);
   </script>
 </body>
-
 </html>

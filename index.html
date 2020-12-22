@@ -47,7 +47,7 @@
       <b>函数绘制控制面板</b>
       <br><br>
       <button onclick="addFun()">添加函数</button>
-      <button onclick="drawFunAndGrid()"><b>作图</b></button>
+      <button onclick="drawFun()"><b>作图</b></button>
       <br><br>
       X：<input id="funXLeftValue" /> ~ <input id="funXRightValue" />
       <br>
@@ -85,7 +85,9 @@
     var useGeometric = false;  //是否用插入图形
     var useText = false;  //是否用插入文字
 
-    var useGrid = true;  //是否带网格
+    var useGrid = false;  //是否带网格
+
+    var funStage = 0, mouseX, mouseY;
 
     var funXLeftValue = -funImgWidth / 100;  // x 初始范围左边界
     var funXRightValue = -funXLeftValue;  // x 初始范围右边界
@@ -93,6 +95,7 @@
     var funYRightValue = -funYLeftValue;  // y 初始范围右边界
 
     plotFunction();
+    plotGrid();
   </script>
 </body>
 

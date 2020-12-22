@@ -1,6 +1,6 @@
 function plotFunction() {
-  var funStage = 0, mouseX, mouseY;
 
+  //添加主功能事件
   funCanvas.addEventListener('mousedown', funMouseDown = function (ob) {
     mouseX = ob.offsetX + 1;
     mouseY = ob.offsetY + 1;
@@ -24,9 +24,6 @@ function plotFunction() {
     mouseY = NoY;
     reDrawFun();
     updateText();
-    if (useGrid) {
-      reDrawGrid();
-    }
   });
 
   funCanvas.addEventListener('mouseup', funMouseUp = function (ob) {
@@ -39,9 +36,6 @@ function plotFunction() {
     if (funStage == 1) {
       funStage = 0;
       reDrawFun();
-      if (useGrid) {
-        reDrawGrid();
-      }
     }
   });
 
@@ -63,17 +57,11 @@ function plotFunction() {
     }
     reDrawFun();
     updateText();
-    if (useGrid) {
-      reDrawGrid();
-    }
   });
 
   // 初始化
   updateText();
   drawFun();
-  if (useGrid) {
-    drawGrid();
-  }
   // if (fun_num == 0) {
   //   addFun();
   // }
@@ -247,13 +235,6 @@ function drawFun() {
   funYLeftValue = parseFloat(document.getElementById("funYLeftValue").value);
   funYRightValue = parseFloat(document.getElementById("funYRightValue").value);
   reDrawFun();
-}
-
-function drawFunAndGrid() {
-  drawFun();
-  if (useGrid) {
-    drawGrid();
-  }
 }
 
 function updateText() {

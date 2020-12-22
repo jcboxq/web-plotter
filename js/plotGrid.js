@@ -1,11 +1,37 @@
 function plotGrid() {
   useGrid = !useGrid;
-  if (useGrid) {
-    $('#funCanvas').unbind();
-    funCanvas.onmousewheel = null;
-    plotFunction();
-  } else {
+  if (useGrid) {//显示网格
+  
+    //添加网格事件
+    funCanvas.addEventListener('mousemove', gridMouseMove = function (ob) {
+      if (funStage != 1) {
+        return;
+      }
+      reDrawGrid();
+    });
+  
+    funCanvas.addEventListener('mouseleave', gridMouseLeave = function (ob) {
+      if (funStage == 1) {
+        funStage = 0;
+        reDrawGrid();
+      }
+    });
+  
+    funCanvas.addEventListener('mousewheel', gridMouseWheel = function (ob) {
+      reDrawGrid();
+    });
+
+    // 初始化
+    drawGrid();
+  } else {//隐藏网格
     clearGrid();
+
+    // 关掉网格事件
+    if (typeof(gridMouseMove) != "undefined") {
+      funCanvas.removeEventListener('mousemove', gridMouseMove);
+      funCanvas.removeEventListener('mouseleave', gridMouseLeave);
+      funCanvas.removeEventListener('mousewheel', gridMouseWheel);
+    }
   }
 }
 
