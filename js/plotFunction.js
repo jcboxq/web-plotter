@@ -62,9 +62,6 @@ function plotFunction() {
   // 初始化
   updateText();
   drawFun();
-  // if (fun_num == 0) {
-  //   addFun();
-  // }
 }
 
 //  获取随机颜色
@@ -73,7 +70,7 @@ function getRandomColor() {
   return color;
 }
 
-//  根据“字符函数”和 x 计算 y
+//  根据函数名称和 x 值计算 y
 function charFunCal(f, x) {
   switch(f) {
     case "":
@@ -209,23 +206,23 @@ function singleCal(c, a, b) {
 }
 
 function drawArc(x, y) {
-  ctx.beginPath();
+  ctxFun.beginPath();
   // arc(弧形),画圆
-  ctx.arc(x, y, 1, 0, Math.PI * 2);
-  ctx.closePath();
-  ctx.fill();
+  ctxFun.arc(x, y, 1, 0, Math.PI * 2);
+  ctxFun.closePath();
+  ctxFun.fill();
 }
 
 function drawLine(lx, ly, px, py) {
-  ctx.beginPath();
-  ctx.moveTo(lx, ly);
-  ctx.lineTo(px, py);
-  ctx.closePath();
-  ctx.stroke(); // 绘制
+  ctxFun.beginPath();
+  ctxFun.moveTo(lx, ly);
+  ctxFun.lineTo(px, py);
+  ctxFun.closePath();
+  ctxFun.stroke(); // 绘制
 }
 
 function reDrawFun() {
-  ctx.clearRect(0, 0, funImgWidth, funImgHeight);
+  ctxFun.clearRect(0, 0, funImgWidth, funImgHeight);
   getFunction();
 }
 
@@ -262,7 +259,7 @@ function scale(x, y, times) {
   funYRightValue = y + (funYRightValue - y) * times;
 }
 
-function Calc(fun, X, Value) {
+function calculate(fun, X, Value) {
   var number = new Array(),
     opt = new Array(),
     F = new Array(),
@@ -341,51 +338,41 @@ function Calc(fun, X, Value) {
 }
 
 function getFunction() {
-  // group：函数（可能是复数）
+  // group：函数组
   var group = document.getElementsByName("Fun");
   var x, y;
-  var lax, lay;
-  var px, py
-  var color, outSide, type
-  var ValueL, ValueR, ValueS, isDrawLine, tmp, tmp;
+  var px, py;
+  var color, outSide;
 
-  for(var k = 1; k < group.length; k++) {
+  for (var k = 1; k < group.length; k++) {
+    var lax=undefined, lay=undefined;
 
     var _funcItem = group[k].parentNode;
 
     outSide = 1;
-    //type = _funcItem.children[0].value;
     // 颜色
     color = _funcItem.children[0].value;
     // 函数表达式
     funcExpression = group[k].value;
-    // 是否画线（默认画点）
-    isDrawLine = _funcItem.children[3].checked;
 
-    ctx.fillStyle = ctx.strokeStyle = color;
-    ctx.lineWidth = "1";
+    ctxFun.fillStyle = ctxFun.strokeStyle = color;
+    ctxFun.lineWidth = "1";
 
     for(var i = 0; i < funImgWidth; i++) {
       x = funXLeftValue + (funXRightValue - funXLeftValue) / funImgWidth * i;
-      y = Calc(funcExpression, ['x'], [x]);
+      y = calculate(funcExpression, ['x'], [x]);
       if(isNaN(y)) {
         continue;
       }
       px = i;
       py = value2PointY(y);
       if(y >= funYLeftValue && y < funYRightValue) {
-        // 画圆
-        drawArc(px, py);
-        if(isDrawLine) {
-          drawLine(lax, lay, px, py);
-        }
+        drawLine(lax, lay, px, py);
         outSide = 0;
       } else {
-        if(isDrawLine) {
-          if(!outSide) {
-            drawLine(lax, lay, px, py);
-          }
-        } else {}
+        if (!outSide) {
+          drawLine(lax, lay, px, py);
+        }
         outSide = 1;
       }
       lax = px;
@@ -404,4 +391,13 @@ function addFun() {
 function deleteFun(node) {
   node.parentNode.removeChild(node);
   drawFun();
+}
+
+function resetFun() {
+  funXLeftValue = -funImgWidth / 100;  // x 初始范围左边界
+  funXRightValue = -funXLeftValue;  // x 初始范围右边界
+  funYLeftValue = -funImgHeight / 100;  // y 初始范围左边界
+  funYRightValue = -funYLeftValue;  // y 初始范围右边界
+  reDrawFun();
+  updateText();
 }

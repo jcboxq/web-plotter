@@ -4,10 +4,9 @@ function plotGrid() {
   
     //添加网格事件
     funCanvas.addEventListener('mousemove', gridMouseMove = function (ob) {
-      if (funStage != 1) {
-        return;
+      if (funStage == 1) {
+        reDrawGrid();
       }
-      reDrawGrid();
     });
   
     funCanvas.addEventListener('mouseleave', gridMouseLeave = function (ob) {
@@ -131,4 +130,8 @@ function getGrid() {
 
 function clearGrid() {
   ctxGrid.clearRect(0, 0, funImgWidth, funImgHeight);
+}
+
+function resetGrid() {
+  reDrawGrid();
 }

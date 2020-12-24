@@ -356,12 +356,12 @@ function getFunction() {
   // group：函数（可能是复数）
   var group = document.getElementsByName("Fun");
   var x, y;
-  var lax, lay;
   var px, py
   var color, outSide, type
   var ValueL, ValueR, ValueS, isDrawLine, tmp, TMP;
 
-  for(var k = 1; k < group.length; k++) {
+  for (var k = 1; k < group.length; k++) {
+    var lax=undefined, lay=undefined;
 
     var _funcItem = group[k].parentNode;
 
@@ -387,7 +387,7 @@ function getFunction() {
       if(y >= yLeftValue && y < yRightValue) {
         // 画圆
         drawArc(px, py);
-        if(isDrawLine) {
+        if (isDrawLine) {
           drawLine(lax, lay, px, py);
         }
         outSide = 0;
