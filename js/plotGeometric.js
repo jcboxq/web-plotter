@@ -52,9 +52,9 @@ function plotGeometric() {
 }
 
 function hitLine(x1, y1, x2, y2, x, y) {
-  if (x > x1 && x < x2) {
+  if (x > Math.min(x1,x2) && x < Math.max(x1,x2) && y > Math.min(y1,y2) && y < Math.max(y1,y2)) {
     var d = Math.abs((y2 - y1) * x + (x1 - x2) * y + (x2 * y1 - x1 * y2)) / Math.sqrt((y2 - y1) ^ 2 + (x1 - x2) ^ 2);
-    if (d <= 2 / funImgWidth * (funXRightValue - funXLeftValue)) {
+    if (d <= 3) {
       return true;
     } else {
       return false;
@@ -65,7 +65,7 @@ function hitLine(x1, y1, x2, y2, x, y) {
 }
 
 function hitRect(x1, y1, x2, y2, x, y) {
-  if (x > x1 && x < x2 && y > y1 && y < y2) {
+  if (x > Math.min(x1,x2) && x < Math.max(x1,x2) && y > Math.min(y1,y2) && y < Math.max(y1,y2)) {
     return true;
   } else {
     return false;
@@ -73,7 +73,7 @@ function hitRect(x1, y1, x2, y2, x, y) {
 }
 
 function hitCircle(x1, y1, x2, y2, x, y) {
-  var r = (x2 - x1) / 2;
+  var r = Math.abs(x2 - x1) / 2;
   var x0 = (x1 + x2) / 2;
   var y0 = (y1 + y2) / 2;
   if ((x - x0) ^ 2 + (y - y0) ^ 2 < r ^ 2) {
@@ -83,8 +83,7 @@ function hitCircle(x1, y1, x2, y2, x, y) {
   }
 }
 
-function hitControl(x0, y0, pr, x, y) {
-  var r = pr / funImgWidth * (funXRightValue - funXLeftValue);
+function hitControl(x0, y0, r, x, y) {
   if ((x - x0) ^ 2 + (y - y0) ^ 2 <= r ^ 2) {
     return true;
   } else {
@@ -93,10 +92,10 @@ function hitControl(x0, y0, pr, x, y) {
 }
 
 function findHitControl() {
-  var x = mouseX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
-  var y =mouseY / funImgHeight * (funYRightValue - funYLeftValue) + funYLeftValue;
+  var x0 = (geomArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+  var y0 = (geomArray[i][5] - funYLeftValue) / (funYRightValue - funYLeftValue) * funImgHeight;
   for (var i = geomArray.length - 1; i >= 0; i--){
-    if (hitControl(geomArray[i][4], geomArray[i][5], 5, x, y)) {
+    if (hitControl(x0, y0, 5, mouseX, mouseY)) {
       return i;
     }
   }
@@ -104,24 +103,26 @@ function findHitControl() {
 }
 
 function findHitBody() {
-  var x = mouseX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
-  var y =mouseY / funImgHeight * (funYRightValue - funYLeftValue) + funYLeftValue;
+  var x1 = (geomArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+  var y1 = (geomArray[i][3] - funYLeftValue) / (funYRightValue - funYLeftValue) * funImgHeight;
+  var x2 = (geomArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+  var y2 = (geomArray[i][5] - funYLeftValue) / (funYRightValue - funYLeftValue) * funImgHeight;
   for (var i = geomArray.length - 1; i >= 0; i--){
     switch (geomArray[i][1]) {
       case "直线": {
-        if (hitLine(geomArray[i][2], geomArray[i][3], geomArray[i][4], geomArray[i][5], x, y)) {
+        if (hitLine(x1, y1, x2, y2, mouseX, mouseY)) {
           return i;
         }
         break;
       }
       case "矩形": {
-        if (hitRect(geomArray[i][2], geomArray[i][3], geomArray[i][4], geomArray[i][5], x, y)) {
+        if (hitRect(x1, y1, x2, y2, mouseX, mouseY)) {
           return i;
         }
         break;
       }
       case "圆": {
-        if (hitCircle(geomArray[i][2], geomArray[i][3], geomArray[i][4], geomArray[i][5], x, y)) {
+        if (hitCircle(x1, y1, x2, y2, mouseX, mouseY)) {
           return i;
         }
         break;
@@ -148,8 +149,8 @@ function changeGeom() {
       NoX = ob.offsetX + 1;
       NoY = ob.offsetY + 1;
 
-      detx = (NoX - mouseX) / funImgWidth * (funXRightValue - funXLeftValue);
-      dety = (NoY - mouseY) / funImgHeight * (funYRightValue - funYLeftValue);
+      detx = NoX - mouseX;
+      dety = NoY - mouseY;
 
       var indexControl = findHitControl(); //被选中控制点的图形的序号
       var indexBody = findHitBody(); //被选中主体的图形的序号
@@ -157,13 +158,18 @@ function changeGeom() {
       if (indexControl != -1) {// 拖动控制点，更新选中状态，绘制控制画布，修改图形大小,并将新的图形属性更新到图形数组
         selectedIndex = indexControl;
 
-        redrawCtrl(geomArray[indexControl][4]+detx, geomArray[indexControl][5]+dety, 5);
+        var x1 = (geomArray[indexControl][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+        var y1 = (geomArray[indexControl][3] - funYLeftValue) / (funYRightValue - funYLeftValue) * funImgHeight;
+        var x2 = (geomArray[indexControl][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+        var y2 = (geomArray[indexControl][5] - funYLeftValue) / (funYRightValue - funYLeftValue) * funImgHeight;
+
+        redrawCtrl(x2+detx, y2+dety, 5);
 
         const geomCanvas = document.getElementsByName('geomCanvas');
         const ctx = geomCanvas[indexControl].getContext("2d");
-        redrawGeom(ctx, geomArray[indexControl][0], geomArray[indexControl][1], geomArray[indexControl][2], geomArray[indexControl][3], geomArray[indexControl][4] + detx, geomArray[indexControl][5] + dety);
+        redrawGeom(ctx, geomArray[indexControl][0], geomArray[indexControl][1], x1, y1, x2 + detx, y2 + dety);
         
-        geomArray[indexControl][4] += detx;
+        geomArray[indexControl][4] += detx;//改成绝对
         geomArray[indexControl][5] += dety;
       } else {
         if (indexBody != -1) {// 拖动主体，更新选中状态，绘制控制画布，移动图形，并将新的图形属性更新到图形数组
@@ -329,19 +335,15 @@ function addGeom() {
   });
 }
 
-function redrawGeom(ctx, color, type, x1, y1, x2, y2) {// 根据绝对坐标绘制图形
-  var px1 = (x1 - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-  var py1 = (y1 - funYLeftValue) / (funYRightValue - funYLeftValue) * funImgHeight;
-  var px2 = (x2 - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-  var py2 = (y2 - funYLeftValue) / (funYRightValue - funYLeftValue) * funImgHeight;
+function redrawGeom(ctx, color, type, x1, y1, x2, y2) {// 根据像素坐标绘制图形
   ctx.clearRect(0, 0, funImgWidth, funImgHeight);
   switch (type) {
     case "直线":
       {
         ctx.strokeStyle = color;
         ctx.beginPath();
-        ctx.moveTo(px1, py1);
-        ctx.lineTo(px2, py2);
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
         ctx.closePath();
         ctx.stroke();
       }
@@ -353,8 +355,6 @@ function redrawGeom(ctx, color, type, x1, y1, x2, y2) {// 根据绝对坐标绘�
 }
 
 function redrawCtrl(x, y, pr) {
-  var px = (x - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-  var py = (y - funYLeftValue) / (funYRightValue - funYLeftValue) * funImgHeight;
   ctxCtrl.clearRect(0, 0, funImgWidth, funImgHeight);
   ctxCtrl.beginPath();
   ctxCtrl.arc(px, py, pr, 0, 2 * Math.PI);
