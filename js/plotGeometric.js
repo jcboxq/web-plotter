@@ -321,7 +321,7 @@ function addGeom() {
         node.style.border = "2px solid #6699cc";
         node.style.position = "absolute";
         canvasDiv.insertBefore(node, funCanvas);
-        $("[name = geomCanvas]").offset({ top: canvasTop, left: canvasLeft });
+        $("[name = geomCanvas]").offset({ top: $("#gridCanvas").offset().top, left: $("#gridCanvas").offset().left });
         noGeomCanvas = false;
       }
       const geomCanvas = document.getElementsByName('geomCanvas');

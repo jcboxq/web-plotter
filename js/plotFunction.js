@@ -342,7 +342,7 @@ function getFunction() {
   var group = document.getElementsByName("Fun");
   var x, y;
   var px, py;
-  var color, outSide;
+  var color, outSide, funcExpression;
 
   for (var k = 1; k < group.length; k++) {
     var lax=undefined, lay=undefined;
@@ -386,11 +386,13 @@ function addFun() {
   newInput.style.display = "block";
   newInput.children[0].value = getRandomColor();
   document.getElementById("masterPanel").appendChild(newInput);
+  addLegend(newInput.children[0].value, "sin(x)");
 }
 
 function deleteFun(node) {
   node.parentNode.removeChild(node);
   drawFun();
+  delLegend();
 }
 
 function resetFun() {
@@ -400,4 +402,37 @@ function resetFun() {
   funYRightValue = -funYLeftValue;  // y 初始范围右边界
   reDrawFun();
   updateText();
+}
+
+function addLegend(color, text) {
+  var textnode=document.createTextNode("y="+text);
+  var node = document.getElementById("legendTemp").cloneNode(true);
+  node.setAttribute("name", "funLegend");
+  node.style.display = "";
+  node.children[0].children[0].children[0].style.border = "5px solid " + color;
+  node.children[1].appendChild(textnode);
+  document.getElementById("legendTable").children[0].appendChild(node);
+}
+
+function delLegend() {
+  var funLegend = document.getElementsByName("funLegend");
+  var node = funLegend[0];
+  node.parentNode.removeChild(node);
+  updateLegend();
+}
+
+function updateLegend() {
+  var color, text;
+  var group = document.getElementsByName("Fun");
+  var legend = document.getElementsByName("funLegend");
+  for (var k = 1; k < group.length; k++) {
+    var _funcItem = group[k].parentNode;
+    // 颜色
+    color = _funcItem.children[0].value;
+    // 函数表达式
+    text = "y=" + group[k].value;
+
+    legend[k - 1].children[0].children[0].children[0].style.border = "5px solid " + color;
+    legend[k - 1].children[1].innerHTML = text;
+  }
 }

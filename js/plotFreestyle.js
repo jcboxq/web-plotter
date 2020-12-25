@@ -17,7 +17,7 @@ function plotFreestyle() {
     node.style.border = "2px solid #6699cc";
     node.style.position = "absolute";
     canvasDiv.appendChild(node);
-    $("#fsCanvas").offset({top:canvasTop,left:canvasLeft});
+    $("#fsCanvas").offset({top:$("#gridCanvas").offset().top,left:$("#gridCanvas").offset().left});
 
 
     // 覆盖辅助功能面板

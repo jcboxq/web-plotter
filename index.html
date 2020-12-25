@@ -19,39 +19,73 @@
       <h1 style="margin-bottom:0;text-align:center">Web Plotter</h1>
     </div>
 
+    <div id="myTitle" align="center" style="position: absolute;width: 504px;">
+      <input type="text" style= "border:0;text-align:center;font-weight:bold;" value="Title"/>
+    </div>
+    <script>
+      $("#myTitle").offset({top:60,left:23});
+    </script>
+
+    <div id="yAxis" align="center" style="float: left;transform:rotate(-90deg);position: absolute;width: 504px;">
+        <input type="text" style= "border:0;text-align:center;font-weight:bold;" value="y"/>
+    </div>
+    <script>
+      $("#yAxis").offset({top:58+20,left:2});
+    </script>
+
     <div id="canvasDiv" align="center" style="float: left">
       <canvas id="gridCanvas" height="500px" width="500px" style="background: #ffffff; border:2px solid #6699cc;"></canvas>
       <script>
-        var canvasLeft = $("#gridCanvas").offset().left;
-        var canvasTop = $("#gridCanvas").offset().top;
+        // var canvasLeft = $("#gridCanvas").offset().left;
+        // var canvasTop = $("#gridCanvas").offset().top;
+        $("#gridCanvas").offset({top:$("#gridCanvas").offset().top+20,left:$("#gridCanvas").offset().left+15});
       </script>
       <canvas id="controlCanvas" height="500px" width="500px" style="border:2px solid #6699cc; position: absolute;"></canvas>
       <script>
-        $("#controlCanvas").offset({top:canvasTop,left:canvasLeft});
+        $("#controlCanvas").offset({top:$("#gridCanvas").offset().top,left:$("#gridCanvas").offset().left});
       </script>
       <canvas id="funCanvas" height="500px" width="500px" style="border:2px solid #6699cc; position: absolute;"></canvas>
       <script>
-        $("#funCanvas").offset({top:canvasTop,left:canvasLeft});
+        $("#funCanvas").offset({top:$("#gridCanvas").offset().top,left:$("#gridCanvas").offset().left});
       </script>
     </div>
 
-    <div id="menu" align="center" style="float: left;height: 500px;border:2px solid #6699cc">
-      <br>
-      &nbsp&nbsp<button type="button" onclick="plotFreestyle()">打开/关闭涂鸦板</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp<button type="button" onclick="plotGeometric()">打开/关闭图形插入</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp<button type="button" onclick="plotText()">打开/关闭文字插入</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp<button type="button" onclick="plotGrid()">显示/隐藏网格</button>&nbsp&nbsp<br><br>
+    <div id="legend" style="background-color: rgb(255, 255, 255); opacity: 0.85;">
+      <table id="legendTable" style="position:absolute;font-size:smaller;color:#000000e1">
+        <tbody>
+          <tr id="legendTemp" style="display: none;">
+            <td class="legendColorBox">
+              <div class="legendColorBoxBorder" style="border:1px solid #ccc;padding:1px">
+                <div class="legendColorBoxColor" style="width:4px;height:0;border:5px solid rgb(0,0,0);overflow:hidden"></div>
+              </div>
+            </td>
+            <td class="legendLabel"></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <div id="slavePanel" align="center" style="float: left;height: 500px;border:2px solid #6699cc"></div>
+    <script>
+      $("#legendTable").offset({top:$("#gridCanvas").offset().top+10,left:$("#gridCanvas").offset().left+10});
+    </script>
 
-    <div id="masterPanel" align="center" style="float: left;border:2px solid #6699cc">
+    <div id="menu" align="center" style="float: left;height: 500px;">
+      <br>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="button" onclick="plotFreestyle()">打开/关闭涂鸦板</button>&nbsp&nbsp<br><br>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="button" onclick="plotGeometric()">打开/关闭图形插入</button>&nbsp&nbsp<br><br>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="button" onclick="plotText()">打开/关闭文字插入</button>&nbsp&nbsp<br><br>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="button" onclick="plotGrid()">显示/隐藏网格</button>&nbsp&nbsp<br><br>
+    </div>
+
+    <div id="slavePanel" align="center" style="float: left;height: 500px;"></div>
+
+    <div id="masterPanel" align="center" style="float: left;">
       <br>
       <b>函数绘制控制面板</b>
       <br><br>
       <button onclick="addFun()">添加函数</button>
-      <button onclick="resetFun();resetGrid();resetGeom()">复位</button>
-      <button onclick="drawFun();drawGrid();drawGeom()"><b>作图</b></button>
+      <button onclick="resetFun();resetGrid();resetGeom();updateLegend()">复位</button>
+      <button onclick="drawFun();drawGrid();drawGeom();updateLegend()"><b>作图</b></button>
       <br><br>
       X：<input id="funXLeftValue" /> ~ <input id="funXRightValue" />
       <br>
@@ -64,13 +98,23 @@
       </span>
     </div>
 
-    <div id="masterPanel" align="center" style="float: left;border:2px solid #6699cc">
+    <!-- <div id="masterPanel" align="center" style="float: left;border:2px solid #6699cc">
       <br>
       <b>方程曲线控制面板</b>
       <br><br>
+    </div> -->
+
+    <div id="xAxis" align="center" style="position: absolute;width: 504px;">
+      <input type="text" style= "border:0;text-align:center;font-weight:bold;" value="x"/>
     </div>
+    <script>
+      $("#xAxis").offset({top:562+20,left:23});
+    </script>
 
     <div id="footer" style="background-color:#FFA500;clear:both;text-align:center">Nanjing University 软工小组：靳学乾 刘学贵 李利娟 王汉镕 徐一舫</div>
+    <script>
+      $("#footer").offset({top:$("#footer").offset().top+17+20});
+    </script>
   </div>
 
   <script>
