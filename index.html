@@ -27,7 +27,7 @@
     </script>
 
     <div id="yAxis" align="center" style="float: left;transform:rotate(-90deg);position: absolute;width: 504px;">
-        <input type="text" style= "border:0;text-align:center;font-weight:bold;" value="y"/>
+        <input type="text" style= "border:0;text-align:center;font-weight:bold;" value="y-axis"/>
     </div>
     <script>
       $("#yAxis").offset({top:58+20,left:2});
@@ -105,7 +105,7 @@
     </div> -->
 
     <div id="xAxis" align="center" style="position: absolute;width: 504px;">
-      <input type="text" style= "border:0;text-align:center;font-weight:bold;" value="x"/>
+      <input type="text" style= "border:0;text-align:center;font-weight:bold;" value="x-axis"/>
     </div>
     <script>
       $("#xAxis").offset({top:562+20,left:23});
@@ -150,7 +150,11 @@
 
     var noGeomCanvas = true;  //判断本次图形插入有无创建画布
     var geomArray = new Array();
-    var selectedIndex = -1;// -1 代表未选中任何图形，自然数代表选中的图形序号
+
+    var noTextCanvas = true;  //判断本次文字插入有无创建画布
+    var textArray = new Array();
+
+    var selectedIndex = -1;// -1 代表未选中任何图形或文字，自然数代表选中的图形或文字序号
 
     addFun();
     plotFunction();

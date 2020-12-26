@@ -20,6 +20,7 @@ function plotGeometric() {
     funCanvas.removeEventListener('mouseleave', gridMouseLeave);
     funCanvas.removeEventListener('mousewheel', gridMouseWheel);
 
+    // 关掉图形随画布移动事件
     if (typeof(mvgeomMouseMove) != "undefined") {
       funCanvas.removeEventListener('mousemove', mvgeomMouseMove);
       funCanvas.removeEventListener('mouseleave', mvgeomMouseLeave);
@@ -57,9 +58,12 @@ function plotGeometric() {
 
     // 恢复主功能事件和网格功能事件
     plotFunction();
-    useGrid = false;
-    plotGrid();
+    if (useGrid) {
+      useGrid = false;
+      plotGrid();
+    }
 
+    // 恢复图形随画布移动事件
     movingGeom();
   }
 }
