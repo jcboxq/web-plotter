@@ -28,7 +28,7 @@ function plotText() {
     }
 
     // 覆盖辅助功能面板
-    $('#slavePanel').html('<br> <button onclick="addText()">插入文字</button> <br><br> <input id="textColor" type="color" value = "#0000ff"/> <select id="fontSize"><option value = "12px" selected = "selected" >1</option><option value="15px">2</option><option value="18px">3</option><option value="21px">4</option><option value="24px">5</option></select> <br><br> <input id="inputText" type="text" style="text-align:center;" value="text"/>');
+    $('#slavePanel').html('<br> <button onclick="addText()">插入文字</button> <br><br> <input id="textColor" type="color" value = "#0000ff"/> <select id="fontSize"><option value = "12px">1</option><option value="15px" selected = "selected">2</option><option value="18px">3</option><option value="21px">4</option><option value="24px">5</option></select> <br><br> <input id="inputText" type="text" style="text-align:center;" value="text"/>');
 
     // 打开修改文字功能
     changeText();
