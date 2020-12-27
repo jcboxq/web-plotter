@@ -84,8 +84,8 @@
       <b>函数绘制控制面板</b>
       <br><br>
       <button onclick="addFun()">添加函数</button>
-      <button onclick="resetFun();resetGrid();resetGeom();updateLegend()">复位</button>
-      <button onclick="drawFun();drawGrid();drawGeom();updateLegend()"><b>作图</b></button>
+      <button onclick="resetFun();resetGrid();resetGeom();updateLegend();resetText()">复位</button>
+      <button onclick="drawFun();drawGrid();drawGeom();updateLegend();drawText()"><b>作图</b></button>
       <br><br>
       X：<input id="funXLeftValue" /> ~ <input id="funXRightValue" />
       <br>
@@ -148,9 +148,11 @@
     var funYLeftValue = -funImgHeight / 100;  // y 初始范围左边界
     var funYRightValue = -funYLeftValue;  // y 初始范围右边界
 
+    var geomEventAdded = false;
     var noGeomCanvas = true;  //判断本次图形插入有无创建画布
     var geomArray = new Array();
 
+    var textEventAdded = false;
     var noTextCanvas = true;  //判断本次文字插入有无创建画布
     var textArray = new Array();
 

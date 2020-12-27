@@ -28,11 +28,10 @@ function plotText() {
     }
 
     // 覆盖辅助功能面板
-    $('#slavePanel').html('<br> <button onclick="addText()">插入文字</button> <br><br> <input id="textColor" type="color"/> <select id="fontSize"><option value = "10" selected = "selected" >10</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option></select> <br><br> <input id="inputText" type="text" style="text-align:center;" value="text"/>');
+    $('#slavePanel').html('<br> <button onclick="addText()">插入文字</button> <br><br> <input id="textColor" type="color" value = "#0000ff"/> <select id="fontSize"><option value = "12px" selected = "selected" >1</option><option value="15px">2</option><option value="18px">3</option><option value="21px">4</option><option value="24px">5</option></select> <br><br> <input id="inputText" type="text" style="text-align:center;" value="text"/>');
 
     // 打开修改文字功能
     changeText();
-
   } else {// 关闭文字插入辅助功能
     // 关掉文字插入事件
     if (typeof(textMouseDown) != "undefined") {
@@ -40,6 +39,8 @@ function plotText() {
       // funCanvas.removeEventListener('mousemove', textMouseMove);
       funCanvas.removeEventListener('mouseup', textMouseUp);
       funCanvas.removeEventListener('mouseleave', textMouseLeave);
+
+      textEventAdded = false;
     }
 
     // 清空选中状态，清空控制画布
@@ -82,7 +83,7 @@ function findHitText() {
     x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
     y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
     x2 = x1 + textArray[i][4];
-    y2 = y1 + textArray[i][5];
+    y2 = y1 - textArray[i][5];
     if (hitText(x1, y1, x2, y2, mouseX, mouseY)) {
       return i;
     }
@@ -203,99 +204,109 @@ function changeText() {
 }
 
 function addText() {
-  // 关掉修改文字事件
-  funCanvas.removeEventListener('mousedown', chtextMouseDown);
-  funCanvas.removeEventListener('mousemove', chtextMouseMove);
-  funCanvas.removeEventListener('mouseup', chtextMouseUp);
-  funCanvas.removeEventListener('mouseleave', chtextMouseLeave);
-  document.removeEventListener('keyup', chtextDelete);
+  if (!textEventAdded) {
+    // 关掉修改文字事件
+    funCanvas.removeEventListener('mousedown', chtextMouseDown);
+    funCanvas.removeEventListener('mousemove', chtextMouseMove);
+    funCanvas.removeEventListener('mouseup', chtextMouseUp);
+    funCanvas.removeEventListener('mouseleave', chtextMouseLeave);
+    document.removeEventListener('keyup', chtextDelete);
 
-  // 添加文字插入事件
-  funCanvas.addEventListener('mousedown', textMouseDown = function (ob) {
-    mouseX = ob.offsetX + 1;
-    mouseY = ob.offsetY + 1;
-    funStage = 1;
-    if (noTextCanvas) {// 本次文字插入仍未创建画布
-      // 创建画布并添加到函数画布之下
-      var node = document.createElement("CANVAS");
-      node.setAttribute("name","textCanvas");
-      node.height = 500;
-      node.width = 500;
-      node.style.border = "2px solid #6699cc";
-      node.style.position = "absolute";
-      canvasDiv.insertBefore(node, funCanvas);
-      $("[name = textCanvas]").offset({ top: $("#gridCanvas").offset().top, left: $("#gridCanvas").offset().left });
-      noTextCanvas = false;
-    }
-  });
-
-  funCanvas.addEventListener('mouseup', textMouseUp = function (ob) {
-    if (funStage == 1) {
-      funStage = 0;
-      if (!noGeomCanvas) {
-        const textCanvas = document.getElementsByName('textCanvas');
-        const ctx = textCanvas[textArray.length].getContext("2d");
-
-        var NoX, NoY;
-        NoX = ob.offsetX + 1;
-        NoY = ob.offsetY + 1;
-
-        redrawText(ctx, $('#textColor').val(), $('#fontSize').val(), mouseX, mouseY, $('#inputText').val());
-
-        var textAttrib = new Array(7);
-        textAttrib[0] = $('#textColor').val();
-        textAttrib[1] = $('#fontSize').val();
-        textAttrib[2] = mouseX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
-        textAttrib[3] = funYRightValue - (mouseY / funImgHeight * (funYRightValue - funYLeftValue));
-        textAttrib[4] = 5;
-        textAttrib[5] = 5;
-        textAttrib[6] = $('#inputText').val();
-        textArray.push(textAttrib);
-
-        funCanvas.removeEventListener('mousedown', textMouseDown);
-        funCanvas.removeEventListener('mouseup', textMouseUp);
-        funCanvas.removeEventListener('mouseleave', textMouseLeave);
-
-        changeText();
-
-        noTextCanvas = true;
+    // 添加文字插入事件
+    funCanvas.addEventListener('mousedown', textMouseDown = function (ob) {
+      mouseX = ob.offsetX + 1;
+      mouseY = ob.offsetY + 1;
+      funStage = 1;
+      if (noTextCanvas) {// 本次文字插入仍未创建画布
+        // 创建画布并添加到函数画布之下
+        var node = document.createElement("CANVAS");
+        node.setAttribute("name", "textCanvas");
+        node.height = 500;
+        node.width = 500;
+        node.style.border = "2px solid #6699cc";
+        node.style.position = "absolute";
+        canvasDiv.insertBefore(node, funCanvas);
+        $("[name = textCanvas]").offset({ top: $("#gridCanvas").offset().top, left: $("#gridCanvas").offset().left });
+        noTextCanvas = false;
       }
-    }
-  });
+    });
 
-  funCanvas.addEventListener('mouseleave', textMouseLeave = function (ob) {
-    if (funStage == 1) {
-      funStage = 0;
-      if (!noGeomCanvas) {
-        const textCanvas = document.getElementsByName('textCanvas');
-        const ctx = textCanvas[textArray.length].getContext("2d");
+    funCanvas.addEventListener('mouseup', textMouseUp = function (ob) {
+      if (funStage == 1) {
+        funStage = 0;
+        if (!noTextCanvas) {
+          const textCanvas = document.getElementsByName('textCanvas');
+          const ctx = textCanvas[textArray.length].getContext("2d");
 
-        var NoX, NoY;
-        NoX = ob.offsetX + 1;
-        NoY = ob.offsetY + 1;
+          var NoX, NoY;
+          NoX = ob.offsetX + 1;
+          NoY = ob.offsetY + 1;
 
-        redrawText(ctx, $('#textColor').val(), $('#fontSize').val(), mouseX, mouseY, $('#inputText').val());
+          var textWidth;
+          textWidth = redrawText(ctx, $('#textColor').val(), $('#fontSize').val(), mouseX, mouseY, $('#inputText').val());
 
-        var textAttrib = new Array(7);
-        textAttrib[0] = $('#textColor').val();
-        textAttrib[1] = $('#fontSize').val();
-        textAttrib[2] = mouseX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
-        textAttrib[3] = funYRightValue - (mouseY / funImgHeight * (funYRightValue - funYLeftValue));
-        textAttrib[4] = 5;
-        textAttrib[5] = 5;
-        textAttrib[6] = $('#inputText').val();
-        textArray.push(textAttrib);
+          var textAttrib = new Array(7);
+          textAttrib[0] = $('#textColor').val();
+          textAttrib[1] = $('#fontSize').val();
+          textAttrib[2] = mouseX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
+          textAttrib[3] = funYRightValue - (mouseY / funImgHeight * (funYRightValue - funYLeftValue));
+          textAttrib[4] = textWidth;
+          textAttrib[5] = textWidth / $('#inputText').val().length;
+          textAttrib[6] = $('#inputText').val();
+          textArray.push(textAttrib);
 
-        funCanvas.removeEventListener('mousedown', textMouseDown);
-        funCanvas.removeEventListener('mouseup', textMouseUp);
-        funCanvas.removeEventListener('mouseleave', textMouseLeave);
+          funCanvas.removeEventListener('mousedown', textMouseDown);
+          funCanvas.removeEventListener('mouseup', textMouseUp);
+          funCanvas.removeEventListener('mouseleave', textMouseLeave);
 
-        changeText();
+          textEventAdded = false;
 
-        noTextCanvas = true;
+          changeText();
+
+          noTextCanvas = true;
+        }
       }
-    }
-  });
+    });
+
+    funCanvas.addEventListener('mouseleave', textMouseLeave = function (ob) {
+      if (funStage == 1) {
+        funStage = 0;
+        if (!noTextCanvas) {
+          const textCanvas = document.getElementsByName('textCanvas');
+          const ctx = textCanvas[textArray.length].getContext("2d");
+
+          var NoX, NoY;
+          NoX = ob.offsetX + 1;
+          NoY = ob.offsetY + 1;
+
+          var textWidth;
+          textWidth = redrawText(ctx, $('#textColor').val(), $('#fontSize').val(), mouseX, mouseY, $('#inputText').val());
+
+          var textAttrib = new Array(7);
+          textAttrib[0] = $('#textColor').val();
+          textAttrib[1] = $('#fontSize').val();
+          textAttrib[2] = mouseX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
+          textAttrib[3] = funYRightValue - (mouseY / funImgHeight * (funYRightValue - funYLeftValue));
+          textAttrib[4] = textWidth;
+          textAttrib[5] = textWidth / $('#inputText').val().length;
+          textAttrib[6] = $('#inputText').val();
+          textArray.push(textAttrib);
+
+          funCanvas.removeEventListener('mousedown', textMouseDown);
+          funCanvas.removeEventListener('mouseup', textMouseUp);
+          funCanvas.removeEventListener('mouseleave', textMouseLeave);
+
+          textEventAdded = false;
+
+          changeText();
+
+          noTextCanvas = true;
+        }
+      }
+    });
+
+    textEventAdded = true;
+  }
 }
 
 function redrawText(ctx, color, size, x1, y1, text) {// 根据像素坐标绘制文字
@@ -303,85 +314,75 @@ function redrawText(ctx, color, size, x1, y1, text) {// 根据像素坐标绘制
   ctx.fillStyle = color;
   ctx.font = size + " 黑体";;
   ctx.fillText(text, x1, y1);
+  return ctx.measureText(text).width;
 }
 
 function redrawTextCtrl(x, y, width, height) {
   ctxCtrl.clearRect(0, 0, funImgWidth, funImgHeight);
   ctxCtrl.beginPath();
-  ctxCtrl.rect(x, y, width, height);
+  ctxCtrl.rect(x, y-height, width, height);
   ctxCtrl.strokeStyle = "blue";
   ctxCtrl.stroke()
 }
 
 
-////////////////////////////////
-// function movingText() {
-//   funCanvas.addEventListener('mousemove', mvgeomMouseMove = function (ob) {
-//     if (funStage == 1) {
-//       for (var i = textArray.length - 1; i >= 0; i--){
-//         var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-//         var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
-//         var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-//         var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-//         const geomCanvas = document.getElementsByName('geomCanvas');
-//         const ctx = geomCanvas[i].getContext("2d");
-//         redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
-//       }
-//     }
-//   });
+function movingText() {
+  funCanvas.addEventListener('mousemove', mvtextMouseMove = function (ob) {
+    if (funStage == 1) {
+      for (var i = textArray.length - 1; i >= 0; i--){
+        var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+        var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
+        const textCanvas = document.getElementsByName('textCanvas');
+        const ctx = textCanvas[i].getContext("2d");
+        redrawText(ctx, textArray[i][0], textArray[i][1], x1, y1, textArray[i][6]);
+      }
+    }
+  });
 
-//   funCanvas.addEventListener('mouseleave', mvgeomMouseLeave = function (ob) {
-//     if (funStage == 1) {
-//       funStage = 0;
-//       for (var i = textArray.length - 1; i >= 0; i--){
-//         var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-//         var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
-//         var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-//         var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-//         const geomCanvas = document.getElementsByName('geomCanvas');
-//         const ctx = geomCanvas[i].getContext("2d");
-//         redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
-//       }
-//     }
-//   });
+  funCanvas.addEventListener('mouseleave', mvtextMouseLeave = function (ob) {
+    if (funStage == 1) {
+      funStage = 0;
+      for (var i = textArray.length - 1; i >= 0; i--){
+        var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+        var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
+        const textCanvas = document.getElementsByName('textCanvas');
+        const ctx = textCanvas[i].getContext("2d");
+        redrawText(ctx, textArray[i][0], textArray[i][1], x1, y1, textArray[i][6]);
+      }
+    }
+  });
 
-//   funCanvas.addEventListener('mousewheel', mvgeomMouseWheel = function (ob) {
-//     for (var i = textArray.length - 1; i >= 0; i--){
-//       var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-//       var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
-//       var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-//       var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-//       const geomCanvas = document.getElementsByName('geomCanvas');
-//       const ctx = geomCanvas[i].getContext("2d");
-//       redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
-//     }
-//   });
-// }
+  funCanvas.addEventListener('mousewheel', mvtextMouseWheel = function (ob) {
+    for (var i = textArray.length - 1; i >= 0; i--){
+      var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+      var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
+      const textCanvas = document.getElementsByName('textCanvas');
+      const ctx = textCanvas[i].getContext("2d");
+      redrawText(ctx, textArray[i][0], textArray[i][1], x1, y1, textArray[i][6]);
+    }
+  });
+}
 
-// function drawText() {
-//   funXLeftValue = parseFloat(document.getElementById("funXLeftValue").value);
-//   funXRightValue = parseFloat(document.getElementById("funXRightValue").value);
-//   funYLeftValue = parseFloat(document.getElementById("funYLeftValue").value);
-//   funYRightValue = parseFloat(document.getElementById("funYRightValue").value);
-//   for (var i = textArray.length - 1; i >= 0; i--){
-//     var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-//     var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
-//     var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-//     var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-//     const geomCanvas = document.getElementsByName('geomCanvas');
-//     const ctx = geomCanvas[i].getContext("2d");
-//     redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
-//   }
-// }
+function drawText() {
+  funXLeftValue = parseFloat(document.getElementById("funXLeftValue").value);
+  funXRightValue = parseFloat(document.getElementById("funXRightValue").value);
+  funYLeftValue = parseFloat(document.getElementById("funYLeftValue").value);
+  funYRightValue = parseFloat(document.getElementById("funYRightValue").value);
+  for (var i = textArray.length - 1; i >= 0; i--){
+    var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+    var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
+    const textCanvas = document.getElementsByName('textCanvas');
+    const ctx = textCanvas[i].getContext("2d");
+    redrawText(ctx, textArray[i][0], textArray[i][1], x1, y1, textArray[i][6]);
+  }
+}
 
-// function resetText() {
-//   for (var i = textArray.length - 1; i >= 0; i--){
-//     var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-//     var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
-//     var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-//     var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-//     const geomCanvas = document.getElementsByName('geomCanvas');
-//     const ctx = geomCanvas[i].getContext("2d");
-//     redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
-//   }
-// }
+function resetText() {
+  for (var i = textArray.length - 1; i >= 0; i--){
+    var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+    var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
+    const textCanvas = document.getElementsByName('textCanvas');
+    const ctx = textCanvas[i].getContext("2d");
+    redrawText(ctx, textArray[i][0], textArray[i][1], x1, y1, textArray[i][6]);
+  }
+}

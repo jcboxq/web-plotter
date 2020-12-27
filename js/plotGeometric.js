@@ -28,7 +28,7 @@ function plotGeometric() {
     }
 
     // 覆盖辅助功能面板
-    $('#slavePanel').html('<br> <button onclick="addGeom()">插入图形</button> <br><br> <input id="geomColor" type="color"/> <select id="geomType"><option value = "直线" selected = "selected" >直线</option> <option value="矩形">矩形</option> <option value="圆">圆</option> </select>');
+    $('#slavePanel').html('<br> <button onclick="addGeom()">插入图形</button> <br><br> <input id="geomColor" type="color"/> <select id="geomType"><option value = "直线" selected = "selected" >直线</option> <option value="向量">向量</option> <option value="矩形">矩形</option> <option value="圆">圆</option> </select>');
 
     // 打开修改插图功能
     changeGeom();
@@ -40,6 +40,8 @@ function plotGeometric() {
       funCanvas.removeEventListener('mousemove', geomMouseMove);
       funCanvas.removeEventListener('mouseup', geomMouseUp);
       funCanvas.removeEventListener('mouseleave', geomMouseLeave);
+
+      geomEventAdded = false;
     }
 
     // 清空选中状态，清空控制画布
@@ -125,6 +127,12 @@ function findHitBody() {
     y2 = (funYRightValue - geomArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
     switch (geomArray[i][1]) {
       case "直线": {
+        if (hitLine(x1, y1, x2, y2, mouseX, mouseY)) {
+          return i;
+        }
+        break;
+      }
+      case "向量": {
         if (hitLine(x1, y1, x2, y2, mouseX, mouseY)) {
           return i;
         }
@@ -300,14 +308,14 @@ function changeGeom() {
 }
 
 function addGeom() {
-  // 关掉修改插图事件
-  funCanvas.removeEventListener('mousedown', chgeomMouseDown);
-  funCanvas.removeEventListener('mousemove', chgeomMouseMove);
-  funCanvas.removeEventListener('mouseup', chgeomMouseUp);
-  funCanvas.removeEventListener('mouseleave', chgeomMouseLeave);
-  document.removeEventListener('keyup', chgeomDelete);
+  if (!geomEventAdded) {
+    // 关掉修改插图事件
+    funCanvas.removeEventListener('mousedown', chgeomMouseDown);
+    funCanvas.removeEventListener('mousemove', chgeomMouseMove);
+    funCanvas.removeEventListener('mouseup', chgeomMouseUp);
+    funCanvas.removeEventListener('mouseleave', chgeomMouseLeave);
+    document.removeEventListener('keyup', chgeomDelete);
 
-  if (typeof (geomMouseDown) == "undefined") {
     // 添加图形插入事件
     funCanvas.addEventListener('mousedown', geomMouseDown = function (ob) {
       mouseX = ob.offsetX + 1;
@@ -362,6 +370,8 @@ function addGeom() {
           funCanvas.removeEventListener('mouseup', geomMouseUp);
           funCanvas.removeEventListener('mouseleave', geomMouseLeave);
 
+          geomEventAdded = false;
+
           changeGeom();
 
           noGeomCanvas = true;
@@ -391,12 +401,16 @@ function addGeom() {
           funCanvas.removeEventListener('mouseup', geomMouseUp);
           funCanvas.removeEventListener('mouseleave', geomMouseLeave);
 
+          geomEventAdded = false;
+
           changeGeom();
 
           noGeomCanvas = true;
         }
       }
     });
+
+    geomEventAdded = true;
   }
 }
 
@@ -411,6 +425,28 @@ function redrawGeom(ctx, color, type, x1, y1, x2, y2) {// 根据像素坐标绘�
         ctx.lineTo(x2, y2);
         ctx.closePath();
         ctx.stroke();
+        break;
+      }
+    case "向量":
+      {
+        drawArrow(ctx, x1, y1, x2, y2, 30, 10, 1, color);
+        break;
+      }
+    case "矩形":
+      {
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.rect(x1, y1, Math.abs(x1-x2), Math.abs(y1-y2));
+        ctx.stroke();
+        break;
+      }
+    case "圆":
+      {
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.arc((x1+x2)/2, (y1+y2)/2, Math.min(Math.abs(x1-x2), Math.abs(y1-y2))/2, 0, 2 * Math.PI);
+        ctx.stroke();
+        break;
       }
     default:
       {
