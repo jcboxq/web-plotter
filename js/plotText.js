@@ -20,6 +20,13 @@ function plotText() {
     funCanvas.removeEventListener('mouseleave', gridMouseLeave);
     funCanvas.removeEventListener('mousewheel', gridMouseWheel);
 
+    // 关掉图形随画布移动事件
+    if (typeof (mvgeomMouseMove) != "undefined") {
+      funCanvas.removeEventListener('mousemove', mvgeomMouseMove);
+      funCanvas.removeEventListener('mouseleave', mvgeomMouseLeave);
+      funCanvas.removeEventListener('mousewheel', mvgeomMouseWheel);
+    }
+
     // 关掉文字随画布移动事件
     if (typeof(mvtextMouseMove) != "undefined") {
       funCanvas.removeEventListener('mousemove', mvtextMouseMove);
@@ -66,6 +73,8 @@ function plotText() {
 
     // 恢复文字随画布移动事件
     movingText();
+    // 恢复图形随画布移动事件
+    movingGeom();
   }
 }
 

@@ -21,10 +21,17 @@ function plotGeometric() {
     funCanvas.removeEventListener('mousewheel', gridMouseWheel);
 
     // 关掉图形随画布移动事件
-    if (typeof(mvgeomMouseMove) != "undefined") {
+    if (typeof (mvgeomMouseMove) != "undefined") {
       funCanvas.removeEventListener('mousemove', mvgeomMouseMove);
       funCanvas.removeEventListener('mouseleave', mvgeomMouseLeave);
       funCanvas.removeEventListener('mousewheel', mvgeomMouseWheel);
+    }
+
+    // 关掉文字随画布移动事件
+    if (typeof(mvtextMouseMove) != "undefined") {
+      funCanvas.removeEventListener('mousemove', mvtextMouseMove);
+      funCanvas.removeEventListener('mouseleave', mvtextMouseLeave);
+      funCanvas.removeEventListener('mousewheel', mvtextMouseWheel);
     }
 
     // 覆盖辅助功能面板
@@ -65,6 +72,9 @@ function plotGeometric() {
       plotGrid();
     }
 
+    // 恢复文字随画布移动事件
+    movingText();
+
     // 恢复图形随画布移动事件
     movingGeom();
   }
@@ -88,9 +98,23 @@ function hitRect(x1, y1, x2, y2, x, y) {
 }
 
 function hitCircle(x1, y1, x2, y2, x, y) {
-  var r = Math.abs(x2 - x1) / 2;
-  var x0 = (x1 + x2) / 2;
-  var y0 = (y1 + y2) / 2;
+  var x0, y0;
+  var r = Math.min(Math.abs(x1 - x2), Math.abs(y1 - y2)) / 2;
+  if (x1 <= x2) {
+    x0 = x1 + r;
+    if (y1 <= y2) {
+      y0 = y1 + r;
+    } else {
+      y0 = y1 - r;
+    }
+  } else {
+    x0 = x1 - r;
+    if (y1 <= y2) {
+      y0 = y1 + r;
+    } else {
+      y0 = y1 - r;
+    }
+  }
   if (Math.pow(x - x0, 2) + Math.pow(y - y0, 2) < Math.pow(r, 2)) {
     return true;
   } else {
@@ -185,7 +209,7 @@ function changeGeom() {
         var x2 = (geomArray[indexControl][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
         var y2 = (funYRightValue - geomArray[indexControl][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
 
-        redrawCtrl(x2+detx, y2+dety, 5);
+        redrawCtrl(geomArray[indexControl][1], x1, y1, x2 + detx, y2 + dety, 5);
 
         const geomCanvas = document.getElementsByName('geomCanvas');
         const ctx = geomCanvas[indexControl].getContext("2d");
@@ -199,7 +223,7 @@ function changeGeom() {
           var x2 = (geomArray[indexBody][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
           var y2 = (funYRightValue - geomArray[indexBody][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
 
-          redrawCtrl(x2+detx, y2+dety, 5);
+          redrawCtrl(geomArray[indexBody][1], x1 + detx, y1 + dety, x2 + detx, y2 + dety, 5);
   
           const geomCanvas = document.getElementsByName('geomCanvas');
           const ctx = geomCanvas[indexBody].getContext("2d");
@@ -228,9 +252,11 @@ function changeGeom() {
         geomArray[indexControl][4] += detx / funImgWidth * (funXRightValue - funXLeftValue);
         geomArray[indexControl][5] -= dety / funImgHeight * (funYRightValue - funYLeftValue);
 
+        var x1 = (geomArray[indexControl][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+        var y1 = (funYRightValue - geomArray[indexControl][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
         var x2 = (geomArray[indexControl][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
         var y2 = (funYRightValue - geomArray[indexControl][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-        redrawCtrl(x2, y2, 5);
+        redrawCtrl(geomArray[indexControl][1], x1, y1, x2, y2, 5);
       } else {
         if (indexBody != -1) {// 点击主体，更新选中状态，将新的图形属性更新到图形数组，更新控制画布
           selectedIndex = indexBody;
@@ -240,9 +266,12 @@ function changeGeom() {
           geomArray[indexBody][4] += detx / funImgWidth * (funXRightValue - funXLeftValue);
           geomArray[indexBody][5] -= dety / funImgHeight * (funYRightValue - funYLeftValue);
 
+          var x1 = (geomArray[indexBody][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+          var y1 = (funYRightValue - geomArray[indexBody][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
           var x2 = (geomArray[indexBody][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
           var y2 = (funYRightValue - geomArray[indexBody][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-          redrawCtrl(x2, y2, 5);
+
+          redrawCtrl(geomArray[indexBody][1], x1, y1, x2, y2, 5);
         } else {// 点击空白，清空选中状态，清空控制画布
           selectedIndex = -1;
           ctxCtrl.clearRect(0, 0, funImgWidth, funImgHeight);
@@ -270,9 +299,11 @@ function changeGeom() {
         geomArray[indexControl][4] += detx / funImgWidth * (funXRightValue - funXLeftValue);
         geomArray[indexControl][5] -= dety / funImgHeight * (funYRightValue - funYLeftValue);
 
+        var x1 = (geomArray[indexControl][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+        var y1 = (funYRightValue - geomArray[indexControl][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
         var x2 = (geomArray[indexControl][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
         var y2 = (funYRightValue - geomArray[indexControl][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-        redrawCtrl(x2, y2, 5);
+        redrawCtrl(geomArray[indexControl][1], x1, y1, x2, y2, 5);
       } else {
         if (indexBody != -1) {// 点击主体，更新选中状态，将新的图形属性更新到图形数组，更新控制画布
           selectedIndex = indexBody;
@@ -282,9 +313,12 @@ function changeGeom() {
           geomArray[indexBody][4] += detx / funImgWidth * (funXRightValue - funXLeftValue);
           geomArray[indexBody][5] -= dety / funImgHeight * (funYRightValue - funYLeftValue);
 
+          var x1 = (geomArray[indexBody][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+          var y1 = (funYRightValue - geomArray[indexBody][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
           var x2 = (geomArray[indexBody][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
           var y2 = (funYRightValue - geomArray[indexBody][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-          redrawCtrl(x2, y2, 5);
+
+          redrawCtrl(geomArray[indexBody][1], x1, y1, x2, y2, 5);
         } else {// 点击空白，清空选中状态，清空控制画布
           selectedIndex = -1;
           ctxCtrl.clearRect(0, 0, funImgWidth, funImgHeight);
@@ -414,6 +448,13 @@ function addGeom() {
   }
 }
 
+function drawRect(ctx, x1, y1, x2, y2, color) {
+  ctx.strokeStyle = color;
+  ctx.beginPath();
+  ctx.rect(Math.min(x1,x2), Math.min(y1,y2), Math.abs(x1-x2), Math.abs(y1-y2));
+  ctx.stroke();
+}
+
 function redrawGeom(ctx, color, type, x1, y1, x2, y2) {// 根据像素坐标绘制图形
   ctx.clearRect(0, 0, funImgWidth, funImgHeight);
   switch (type) {
@@ -434,17 +475,31 @@ function redrawGeom(ctx, color, type, x1, y1, x2, y2) {// 根据像素坐标绘�
       }
     case "矩形":
       {
-        ctx.strokeStyle = color;
-        ctx.beginPath();
-        ctx.rect(x1, y1, Math.abs(x1-x2), Math.abs(y1-y2));
-        ctx.stroke();
+        drawRect(ctx, x1, y1, x2, y2, color);
         break;
       }
     case "圆":
       {
+        var r = Math.min(Math.abs(x1 - x2), Math.abs(y1 - y2)) / 2;
+        var x0, y0;
+        if (x1 <= x2) {
+          x0 = x1 + r;
+          if (y1 <= y2) {
+            y0 = y1 + r;
+          } else {
+            y0 = y1 - r;
+          }
+        } else {
+          x0 = x1 - r;
+          if (y1 <= y2) {
+            y0 = y1 + r;
+          } else {
+            y0 = y1 - r;
+          }
+        }
         ctx.strokeStyle = color;
         ctx.beginPath();
-        ctx.arc((x1+x2)/2, (y1+y2)/2, Math.min(Math.abs(x1-x2), Math.abs(y1-y2))/2, 0, 2 * Math.PI);
+        ctx.arc(x0, y0, r, 0, 2 * Math.PI);
         ctx.stroke();
         break;
       }
@@ -455,12 +510,33 @@ function redrawGeom(ctx, color, type, x1, y1, x2, y2) {// 根据像素坐标绘�
   }
 }
 
-function redrawCtrl(x, y, pr) {
+function redrawCtrl(type, x1, y1, x2, y2, pr) {
   ctxCtrl.clearRect(0, 0, funImgWidth, funImgHeight);
   ctxCtrl.beginPath();
-  ctxCtrl.arc(x, y, pr, 0, 2 * Math.PI);
+  ctxCtrl.arc(x2, y2, pr, 0, 2 * Math.PI);
   ctxCtrl.strokeStyle = "blue";
-  ctxCtrl.stroke()
+  ctxCtrl.stroke();
+  if (type == "圆") {
+    var x0, y0;
+    var r = Math.min(Math.abs(x1 - x2), Math.abs(y1 - y2)) / 2;
+    if (x1 <= x2) {
+      x0 = x1 + r;
+      if (y1 <= y2) {
+        y0 = y1 + r;
+      } else {
+        y0 = y1 - r;
+      }
+    } else {
+      x0 = x1 - r;
+      if (y1 <= y2) {
+        y0 = y1 + r;
+      } else {
+        y0 = y1 - r;
+      }
+    }
+    // drawRect(ctxCtrl, x0 - r, y0 - r, x0 + r, y0 + r, "blue");
+    drawRect(ctxCtrl, x1, y1, x2, y2, "blue");
+  }
 }
 
 function movingGeom() {
