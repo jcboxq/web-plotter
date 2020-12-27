@@ -267,8 +267,8 @@ function addText() {
     if (funStage == 1) {
       funStage = 0;
       if (!noGeomCanvas) {
-        const geomCanvas = document.getElementsByName('geomCanvas');
-        const ctx = geomCanvas[textArray.length].getContext("2d");
+        const textCanvas = document.getElementsByName('textCanvas');
+        const ctx = textCanvas[textArray.length].getContext("2d");
 
         var NoX, NoY;
         NoX = ob.offsetX + 1;

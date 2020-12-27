@@ -307,95 +307,97 @@ function addGeom() {
   funCanvas.removeEventListener('mouseleave', chgeomMouseLeave);
   document.removeEventListener('keyup', chgeomDelete);
 
-  // 添加图形插入事件
-  funCanvas.addEventListener('mousedown', geomMouseDown = function (ob) {
-    mouseX = ob.offsetX + 1;
-    mouseY = ob.offsetY + 1;
-    funStage = 1;
-  });
+  if (typeof (geomMouseDown) == "undefined") {
+    // 添加图形插入事件
+    funCanvas.addEventListener('mousedown', geomMouseDown = function (ob) {
+      mouseX = ob.offsetX + 1;
+      mouseY = ob.offsetY + 1;
+      funStage = 1;
+    });
 
-  funCanvas.addEventListener('mousemove', geomMouseMove = function (ob) {
-    if (funStage == 1) {
-      if (noGeomCanvas) {// 本次图形插入仍未创建画布
-        // 创建画布并添加到函数画布之下
-        var node = document.createElement("CANVAS");
-        node.setAttribute("name","geomCanvas");
-        node.height = 500;
-        node.width = 500;
-        node.style.border = "2px solid #6699cc";
-        node.style.position = "absolute";
-        canvasDiv.insertBefore(node, funCanvas);
-        $("[name = geomCanvas]").offset({ top: $("#gridCanvas").offset().top, left: $("#gridCanvas").offset().left });
-        noGeomCanvas = false;
-      }
-      const geomCanvas = document.getElementsByName('geomCanvas');
-      const ctx = geomCanvas[geomArray.length].getContext("2d");
+    funCanvas.addEventListener('mousemove', geomMouseMove = function (ob) {
+      if (funStage == 1) {
+        if (noGeomCanvas) {// 本次图形插入仍未创建画布
+          // 创建画布并添加到函数画布之下
+          var node = document.createElement("CANVAS");
+          node.setAttribute("name", "geomCanvas");
+          node.height = 500;
+          node.width = 500;
+          node.style.border = "2px solid #6699cc";
+          node.style.position = "absolute";
+          canvasDiv.insertBefore(node, funCanvas);
+          $("[name = geomCanvas]").offset({ top: $("#gridCanvas").offset().top, left: $("#gridCanvas").offset().left });
+          noGeomCanvas = false;
+        }
+        const geomCanvas = document.getElementsByName('geomCanvas');
+        const ctx = geomCanvas[geomArray.length].getContext("2d");
 
-      var NoX, NoY;
-      NoX = ob.offsetX + 1;
-      NoY = ob.offsetY + 1;
-
-      redrawGeom(ctx, $('#geomColor').val(), $('#geomType').val(), mouseX, mouseY, NoX, NoY);
-    }
-  });
-
-  funCanvas.addEventListener('mouseup', geomMouseUp = function (ob) {
-    if (funStage == 1) {
-      funStage = 0;
-      if (!noGeomCanvas) {
         var NoX, NoY;
         NoX = ob.offsetX + 1;
         NoY = ob.offsetY + 1;
 
-        var geomAttrib = new Array(6);
-        geomAttrib[0] = $('#geomColor').val();
-        geomAttrib[1] = $('#geomType').val();
-        geomAttrib[2] = mouseX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
-        geomAttrib[3] = funYRightValue - (mouseY / funImgHeight * (funYRightValue - funYLeftValue));
-        geomAttrib[4] = NoX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
-        geomAttrib[5] = funYRightValue - (NoY / funImgHeight * (funYRightValue - funYLeftValue));
-        geomArray.push(geomAttrib);
-
-        funCanvas.removeEventListener('mousedown', geomMouseDown);
-        funCanvas.removeEventListener('mousemove', geomMouseMove);
-        funCanvas.removeEventListener('mouseup', geomMouseUp);
-        funCanvas.removeEventListener('mouseleave', geomMouseLeave);
-
-        changeGeom();
-
-        noGeomCanvas = true;
+        redrawGeom(ctx, $('#geomColor').val(), $('#geomType').val(), mouseX, mouseY, NoX, NoY);
       }
-    }
-  });
+    });
 
-  funCanvas.addEventListener('mouseleave', geomMouseLeave = function (ob) {
-    if (funStage == 1) {
-      funStage = 0;
-      if (!noGeomCanvas) {
-        var NoX, NoY;
-        NoX = ob.offsetX + 1;
-        NoY = ob.offsetY + 1;
+    funCanvas.addEventListener('mouseup', geomMouseUp = function (ob) {
+      if (funStage == 1) {
+        funStage = 0;
+        if (!noGeomCanvas) {
+          var NoX, NoY;
+          NoX = ob.offsetX + 1;
+          NoY = ob.offsetY + 1;
 
-        var geomAttrib = new Array(6);
-        geomAttrib[0] = $('#geomColor').val();
-        geomAttrib[1] = $('#geomType').val();
-        geomAttrib[2] = mouseX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
-        geomAttrib[3] = funYRightValue - (mouseY / funImgHeight * (funYRightValue - funYLeftValue));
-        geomAttrib[4] = NoX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
-        geomAttrib[5] = funYRightValue - (NoY / funImgHeight * (funYRightValue - funYLeftValue));
-        geomArray.push(geomAttrib);
+          var geomAttrib = new Array(6);
+          geomAttrib[0] = $('#geomColor').val();
+          geomAttrib[1] = $('#geomType').val();
+          geomAttrib[2] = mouseX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
+          geomAttrib[3] = funYRightValue - (mouseY / funImgHeight * (funYRightValue - funYLeftValue));
+          geomAttrib[4] = NoX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
+          geomAttrib[5] = funYRightValue - (NoY / funImgHeight * (funYRightValue - funYLeftValue));
+          geomArray.push(geomAttrib);
 
-        funCanvas.removeEventListener('mousedown', geomMouseDown);
-        funCanvas.removeEventListener('mousemove', geomMouseMove);
-        funCanvas.removeEventListener('mouseup', geomMouseUp);
-        funCanvas.removeEventListener('mouseleave', geomMouseLeave);
+          funCanvas.removeEventListener('mousedown', geomMouseDown);
+          funCanvas.removeEventListener('mousemove', geomMouseMove);
+          funCanvas.removeEventListener('mouseup', geomMouseUp);
+          funCanvas.removeEventListener('mouseleave', geomMouseLeave);
 
-        changeGeom();
+          changeGeom();
 
-        noGeomCanvas = true;
+          noGeomCanvas = true;
+        }
       }
-    }
-  });
+    });
+
+    funCanvas.addEventListener('mouseleave', geomMouseLeave = function (ob) {
+      if (funStage == 1) {
+        funStage = 0;
+        if (!noGeomCanvas) {
+          var NoX, NoY;
+          NoX = ob.offsetX + 1;
+          NoY = ob.offsetY + 1;
+
+          var geomAttrib = new Array(6);
+          geomAttrib[0] = $('#geomColor').val();
+          geomAttrib[1] = $('#geomType').val();
+          geomAttrib[2] = mouseX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
+          geomAttrib[3] = funYRightValue - (mouseY / funImgHeight * (funYRightValue - funYLeftValue));
+          geomAttrib[4] = NoX / funImgWidth * (funXRightValue - funXLeftValue) + funXLeftValue;
+          geomAttrib[5] = funYRightValue - (NoY / funImgHeight * (funYRightValue - funYLeftValue));
+          geomArray.push(geomAttrib);
+
+          funCanvas.removeEventListener('mousedown', geomMouseDown);
+          funCanvas.removeEventListener('mousemove', geomMouseMove);
+          funCanvas.removeEventListener('mouseup', geomMouseUp);
+          funCanvas.removeEventListener('mouseleave', geomMouseLeave);
+
+          changeGeom();
+
+          noGeomCanvas = true;
+        }
+      }
+    });
+  }
 }
 
 function redrawGeom(ctx, color, type, x1, y1, x2, y2) {// 根据像素坐标绘制图形
