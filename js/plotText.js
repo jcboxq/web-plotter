@@ -28,7 +28,7 @@ function plotText() {
     }
 
     // 覆盖辅助功能面板
-    $('#slavePanel').html('<br> <button onclick="addText()">插入文字</button> <br><br> <input id="textColor" type="color"/> <select id="fontSize"><option value = "1" selected = "selected" >1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select> <br><br> <input id="inputText" type="text" style="text-align:center;" value="text"/>');
+    $('#slavePanel').html('<br> <button onclick="addText()">插入文字</button> <br><br> <input id="textColor" type="color"/> <select id="fontSize"><option value = "10" selected = "selected" >10</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option></select> <br><br> <input id="inputText" type="text" style="text-align:center;" value="text"/>');
 
     // 打开修改文字功能
     changeText();
@@ -75,26 +75,6 @@ function hitText(x1, y1, x2, y2, x, y) {
     return false;
   }
 }
-
-// function hitControl(x0, y0, r, x, y) {
-//   if (Math.pow(x - x0, 2) + Math.pow(y - y0, 2) <= Math.pow(r, 2)) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// }
-
-// function findHitControl() {
-//   var x0, y0;
-//   for (var i = textArray.length - 1; i >= 0; i--){
-//     x0 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-//     y0 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-//     if (hitControl(x0, y0, 5, mouseX, mouseY)) {
-//       return i;
-//     }
-//   }
-//   return -1;
-// }
 
 function findHitText() {
   var x1, y1, x2, y2;
@@ -253,8 +233,8 @@ function addText() {
     if (funStage == 1) {
       funStage = 0;
       if (!noGeomCanvas) {
-        const geomCanvas = document.getElementsByName('geomCanvas');
-        const ctx = geomCanvas[textArray.length].getContext("2d");
+        const textCanvas = document.getElementsByName('textCanvas');
+        const ctx = textCanvas[textArray.length].getContext("2d");
 
         var NoX, NoY;
         NoX = ob.offsetX + 1;
@@ -321,7 +301,7 @@ function addText() {
 function redrawText(ctx, color, size, x1, y1, text) {// 根据像素坐标绘制文字
   ctx.clearRect(0, 0, funImgWidth, funImgHeight);
   ctx.fillStyle = color;
-  ctx.font = size;
+  ctx.font = size + " 黑体";;
   ctx.fillText(text, x1, y1);
 }
 
@@ -335,73 +315,73 @@ function redrawTextCtrl(x, y, width, height) {
 
 
 ////////////////////////////////
-function movingText() {
-  funCanvas.addEventListener('mousemove', mvgeomMouseMove = function (ob) {
-    if (funStage == 1) {
-      for (var i = textArray.length - 1; i >= 0; i--){
-        var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-        var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
-        var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-        var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-        const geomCanvas = document.getElementsByName('geomCanvas');
-        const ctx = geomCanvas[i].getContext("2d");
-        redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
-      }
-    }
-  });
+// function movingText() {
+//   funCanvas.addEventListener('mousemove', mvgeomMouseMove = function (ob) {
+//     if (funStage == 1) {
+//       for (var i = textArray.length - 1; i >= 0; i--){
+//         var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+//         var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
+//         var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+//         var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
+//         const geomCanvas = document.getElementsByName('geomCanvas');
+//         const ctx = geomCanvas[i].getContext("2d");
+//         redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
+//       }
+//     }
+//   });
 
-  funCanvas.addEventListener('mouseleave', mvgeomMouseLeave = function (ob) {
-    if (funStage == 1) {
-      funStage = 0;
-      for (var i = textArray.length - 1; i >= 0; i--){
-        var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-        var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
-        var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-        var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-        const geomCanvas = document.getElementsByName('geomCanvas');
-        const ctx = geomCanvas[i].getContext("2d");
-        redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
-      }
-    }
-  });
+//   funCanvas.addEventListener('mouseleave', mvgeomMouseLeave = function (ob) {
+//     if (funStage == 1) {
+//       funStage = 0;
+//       for (var i = textArray.length - 1; i >= 0; i--){
+//         var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+//         var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
+//         var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+//         var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
+//         const geomCanvas = document.getElementsByName('geomCanvas');
+//         const ctx = geomCanvas[i].getContext("2d");
+//         redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
+//       }
+//     }
+//   });
 
-  funCanvas.addEventListener('mousewheel', mvgeomMouseWheel = function (ob) {
-    for (var i = textArray.length - 1; i >= 0; i--){
-      var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-      var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
-      var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-      var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-      const geomCanvas = document.getElementsByName('geomCanvas');
-      const ctx = geomCanvas[i].getContext("2d");
-      redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
-    }
-  });
-}
+//   funCanvas.addEventListener('mousewheel', mvgeomMouseWheel = function (ob) {
+//     for (var i = textArray.length - 1; i >= 0; i--){
+//       var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+//       var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
+//       var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+//       var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
+//       const geomCanvas = document.getElementsByName('geomCanvas');
+//       const ctx = geomCanvas[i].getContext("2d");
+//       redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
+//     }
+//   });
+// }
 
-function drawGeom() {
-  funXLeftValue = parseFloat(document.getElementById("funXLeftValue").value);
-  funXRightValue = parseFloat(document.getElementById("funXRightValue").value);
-  funYLeftValue = parseFloat(document.getElementById("funYLeftValue").value);
-  funYRightValue = parseFloat(document.getElementById("funYRightValue").value);
-  for (var i = textArray.length - 1; i >= 0; i--){
-    var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-    var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
-    var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-    var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-    const geomCanvas = document.getElementsByName('geomCanvas');
-    const ctx = geomCanvas[i].getContext("2d");
-    redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
-  }
-}
+// function drawText() {
+//   funXLeftValue = parseFloat(document.getElementById("funXLeftValue").value);
+//   funXRightValue = parseFloat(document.getElementById("funXRightValue").value);
+//   funYLeftValue = parseFloat(document.getElementById("funYLeftValue").value);
+//   funYRightValue = parseFloat(document.getElementById("funYRightValue").value);
+//   for (var i = textArray.length - 1; i >= 0; i--){
+//     var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+//     var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
+//     var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+//     var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
+//     const geomCanvas = document.getElementsByName('geomCanvas');
+//     const ctx = geomCanvas[i].getContext("2d");
+//     redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
+//   }
+// }
 
-function resetGeom() {
-  for (var i = textArray.length - 1; i >= 0; i--){
-    var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-    var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
-    var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
-    var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
-    const geomCanvas = document.getElementsByName('geomCanvas');
-    const ctx = geomCanvas[i].getContext("2d");
-    redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
-  }
-}
+// function resetText() {
+//   for (var i = textArray.length - 1; i >= 0; i--){
+//     var x1 = (textArray[i][2] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+//     var y1 = (funYRightValue - textArray[i][3]) / (funYRightValue - funYLeftValue) * funImgHeight;
+//     var x2 = (textArray[i][4] - funXLeftValue) / (funXRightValue - funXLeftValue) * funImgWidth;
+//     var y2 = (funYRightValue - textArray[i][5]) / (funYRightValue - funYLeftValue) * funImgHeight;
+//     const geomCanvas = document.getElementsByName('geomCanvas');
+//     const ctx = geomCanvas[i].getContext("2d");
+//     redrawGeom(ctx, textArray[i][0], textArray[i][1], x1, y1, x2, y2);
+//   }
+// }
