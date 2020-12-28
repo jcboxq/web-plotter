@@ -10,6 +10,63 @@
   <script src="js/plotFreestyle.js"></script>
   <script src="js/plotGeometric.js"></script>
   <script src="js/plotText.js"></script>
+  <style>
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 25px;
+    }
+
+    .switch input {display:none;}
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 2px;
+      bottom: 3px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+  </style>
 </head>
 
 <body>
@@ -69,15 +126,33 @@
       $("#legendTable").offset({top:$("#gridCanvas").offset().top+10,left:$("#gridCanvas").offset().left+10});
     </script>
 
-    <div id="menu" align="center" style="float: left;height: 500px;">
-      <br>
-      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="button" onclick="plotFreestyle()">打开/关闭涂鸦板</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="button" onclick="plotGeometric()">打开/关闭图形插入</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="button" onclick="plotText()">打开/关闭文字插入</button>&nbsp&nbsp<br><br>
-      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="button" onclick="plotGrid()">显示/隐藏网格</button>&nbsp&nbsp<br><br>
+    <div id="menu" style="float: left;height: 500px;">
+      <br><br>
+      &nbsp&nbsp&nbsp&nbsp
+      <label class="switch">
+        <input id="fsSwitch" type="checkbox" onclick="plotFreestyle()"/>
+        <div class="slider round"></div>
+      </label>涂鸦板<br><br>
+      &nbsp&nbsp&nbsp&nbsp
+      <label class="switch">
+        <input id="geomSwitch" type="checkbox" onclick="plotGeometric()"/>
+        <div class="slider round"></div>
+      </label>图形插入<br><br>
+      &nbsp&nbsp&nbsp&nbsp
+      <label class="switch">
+        <input id="textSwitch" type="checkbox" onclick="plotText()"/>
+        <div class="slider round"></div>
+      </label>文字插入<br><br>
+      &nbsp&nbsp&nbsp&nbsp
+      <label class="switch">
+        <input id="gridSwitch" type="checkbox" onclick="plotGrid()"/>
+        <div class="slider round"></div>
+      </label>显示/隐藏网格<br><br>
+      &nbsp&nbsp&nbsp&nbsp关闭打开的辅助功能即可<br>
+      &nbsp&nbsp&nbsp&nbsp恢复鼠标拖动缩放坐标系
     </div>
 
-    <div id="slavePanel" align="center" style="float: left;height: 500px;"></div>
+    <div id="slavePanel" align="center" style="float: left;height: 500px; border:2px solid #6699cc;"></div>
 
     <div id="masterPanel" align="center" style="float: left;">
       <br>

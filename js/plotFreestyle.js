@@ -3,10 +3,14 @@ function plotFreestyle() {
   if (useFreestyle) {// 打开涂鸦板辅助功能
     // 关掉已打开的辅助功能事件
     if (useGeometric) {
-      plotGeometric();
+      // plotGeometric();
+      // $("#geomSwitch").click();
+      document.getElementById("geomSwitch").click();
     }
     if (useText) {
-      plotText();
+      // plotText();
+      // $("#textSwitch").click();
+      document.getElementById("textSwitch").click();
     }
 
     // 创建涂鸦板画布,覆盖函数画布

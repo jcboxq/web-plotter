@@ -3,10 +3,14 @@ function plotText() {
   if (useText) {// 打开插入文字辅助功能
     // 关掉已打开的辅助功能事件
     if (useFreestyle) {
-      plotFreestyle();
+      // plotFreestyle();
+      // $("#fsSwitch").click();
+      document.getElementById("fsSwitch").click();
     }
     if (useGeometric) {
-      plotGeometric();
+      // plotGeometric();
+      // $("#geomSwitch").click();
+      document.getElementById("geomSwitch").click();
     }
 
     // 关掉主功能事件和网格功能事件
@@ -35,7 +39,7 @@ function plotText() {
     }
 
     // 覆盖辅助功能面板
-    $('#slavePanel').html('<br> <button onclick="addText()">插入文字</button> <br><br> <input id="textColor" type="color" value = "#0000ff"/> <select id="fontSize"><option value = "12px">1</option><option value="15px" selected = "selected">2</option><option value="18px">3</option><option value="21px">4</option><option value="24px">5</option></select> <br><br> <input id="inputText" type="text" style="text-align:center;" value="text"/>');
+    $('#slavePanel').html('<br> <input id="textColor" type="color" value = "#0000ff"/> <br><br> Font Size: <select id="fontSize"><option value = "12px">1</option><option value="15px" selected = "selected">2</option><option value="18px">3</option><option value="21px">4</option><option value="24px">5</option></select> <br><br> <input id="inputText" type="text" style="text-align:center;" value="text"/> <br><br> <button onclick="addText()">插入文字</button> <br><br> 拖动文字修改位置 <br><br> 选中文字后按 Delete<br>键可以删除文字');
 
     // 打开修改文字功能
     changeText();

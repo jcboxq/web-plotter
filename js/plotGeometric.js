@@ -3,10 +3,14 @@ function plotGeometric() {
   if (useGeometric) {// 打开插图辅助功能
     // 关掉已打开的辅助功能事件
     if (useFreestyle) {
-      plotFreestyle();
+      // plotFreestyle();
+      // $("#fsSwitch").click();
+      document.getElementById("fsSwitch").click();
     }
     if (useText) {
-      plotText();
+      // plotText();
+      // $("#textSwitch").click();
+      document.getElementById("textSwitch").click();
     }
 
     // 关掉主功能事件和网格功能事件
@@ -35,7 +39,7 @@ function plotGeometric() {
     }
 
     // 覆盖辅助功能面板
-    $('#slavePanel').html('<br> <button onclick="addGeom()">插入图形</button> <br><br> <input id="geomColor" type="color"/> <select id="geomType"><option value = "直线" selected = "selected" >直线</option> <option value="向量">向量</option> <option value="矩形">矩形</option> <option value="圆">圆</option> </select>');
+    $('#slavePanel').html('<br> <input id="geomColor" type="color"/> <select id="geomType"><option value = "直线" selected = "selected" >直线</option> <option value="向量">向量</option> <option value="矩形">矩形</option> <option value="圆">圆</option> </select> <br><br> <button onclick="addGeom()">插入图形</button> <br><br> 拖动图形修改位置<br>拖动蓝圈修改大小 <br><br> 选中图形后按 Delete<br>键可以删除图形');
 
     // 打开修改插图功能
     changeGeom();
